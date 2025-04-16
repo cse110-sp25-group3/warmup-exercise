@@ -8,15 +8,49 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="card-container">
-      <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-face card-front">
-          <img src="../asset/card-deck/CLUB-1.svg" alt="Front of card">
-        </div>
-        <div class="card-face card-back">
-          <img src="../asset/card-deck/Backside.svg" alt="Back of card">
-        </div>
-      </div>
+    
+    <div class="card-grid-full">
     </div>
+        
+      <div class="card-wrapper">
+        <div class="card" id="card-CLUB-1">
+          <div class="card-face card-front">
+            <img src="../asset/card-deck/CLUB-1.svg" alt="Front of card">
+          </div>
+          <div class="card-face card-back">
+            <img src="../asset/card-deck/Backside.svg" alt="Back of card">
+          </div>
+        </div>
+        <button onclick="flipCard('card-CLUB-1')">Flip Card</button>
+      </div>
+
+    <script>
+      function flipCard(cardId) {
+        const card = document.getElementById(cardId);
+        card.classList.toggle('flipped');
+      }
+
+      const suits = ['CLUB', 'DIAMOND', 'HEART', 'SPADE'];
+      const ranks = [
+        '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11-JACK', '12-QUEEN', '13-KING'
+      ];
+
+      const cardGrid = document.querySelector('.card-grid-full');
+
+      suits.forEach(suit => {
+        ranks.forEach(rank => {
+          const cardDiv = document.createElement('div');
+          cardDiv.className = 'grid-cell';
+          cardDiv.id = `${suit}-${rank}`;
+
+          const cardImg = document.createElement('img');
+          cardImg.src = `../asset/card-deck/${suit}-${rank}.svg`;
+          cardImg.alt = `${suit}-${rank}`;
+
+          cardDiv.appendChild(cardImg);
+          cardGrid.appendChild(cardDiv);
+        });
+      });
+    </script>
   </body>
 </html>
