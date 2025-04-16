@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blackjack Game</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #006400;
+      font-family: sans-serif;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .game-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+
+    .logo {
+      font-size: 2em;
+      font-weight: bold;
+      margin-left: 20px;
+    }
+
+    .top-buttons button {
+      margin-left: 10px;
+      margin-right:10px;
+      padding: 8px 14px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: white;
+      color: black;
+      cursor: pointer;
+    }
+
+    .top-buttons button:hover {
+      background-color: lightgray;
+    }
+
+    .card-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 60px;
+      margin-top: 30px;
+    }
+
+    .dealer-zone, .player-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-mat {
+      width: 220px;
+      height: 140px;
+      background: linear-gradient(135deg, #fdfdfd, #e8e8e8);
+      border-radius: 12px;
+      border: 2px solid #ccc;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game-info {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      font-size: 1em;
+    }
+
+    .game-info p {
+      margin: 5px 0;
+    }
+
+    .action-buttons {
+      position: absolute;
+      top: 50%;
+      right: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transform: translateY(-50%);
+    }
+
+    .action-buttons button {
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #222;
+      color: white;
+      cursor: pointer;
+    }
+
+    .action-buttons button:hover {
+      background-color: #444;
+    }
+
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 66vw;
+      height: 66vh;
+      background: white;
+      color: black;
+      border-radius: 10px;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .modal iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+      display: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="top-bar">
+      <div class="logo">♠ Blackjack ♣</div>
+      <div class="top-buttons">
+        <button onclick="toggleHelp()">Help</button>
+        <button onclick="toggleSettings()">Settings</button>
+      </div>
+    </div>
+
+    <div class="card-area">
+      <div class="dealer-zone">
+        <p>Dealer</p>
+        <div class="card-mat" id="dealer-mat"></div>
+      </div>
+      <div class="player-zone">
+        <p>You</p>
+        <div class="card-mat" id="player-mat"></div>
+      </div>
+    </div>
+
+    <div class="game-info">
+      <p>BET: <span id="bet">25</span></p>
+      <p>BALANCE: <span id="balance">4975</span></p>
+      <p>LAST WIN: <span id="last-win">0</span></p>
+    </div>
+
+    <div class="action-buttons">
+      <button onclick="hit()">Hit</button>
+      <button onclick="stand()">Stand</button>
+      <button onclick="restart()">Restart</button>
+    </div>
+  </div>
+
+  <div id="overlay" class="hidden"></div>
+  <div id="help-modal" class="modal hidden">
+    <iframe src="help.html"></iframe>
+  </div>
+  <div id="settings-modal" class="modal hidden">
+    <iframe src="settings.html"></iframe>
+  </div>
+
+  <script>
+    function toggleHelp() {
+      const modal = document.getElementById("help-modal");
+      const overlay = document.getElementById("overlay");
+      modal.classList.toggle("hidden");
+      overlay.style.display = modal.classList.contains("hidden") ? "none" : "block";
+    }
+
+    function toggleSettings() {
+      const modal = document.getElementById("settings-modal");
+      const overlay = document.getElementById("overlay");
+      modal.classList.toggle("hidden");
+      overlay.style.display = modal.classList.contains("hidden") ? "none" : "block";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("overlay").addEventListener("click", () => {
+        document.getElementById("help-modal").classList.add("hidden");
+        document.getElementById("settings-modal").classList.add("hidden");
+        document.getElementById("overlay").style.display = "none";
+      });
+    });
+
+    function hit() {
+      const card = document.createElement('div');
+      card.textContent = "🂡";
+      document.getElementById("player-mat").appendChild(card);
+    }
+
+    function stand() {
+      alert("You chose to stand.");
+    }
+
+    function restart() {
+      document.getElementById("player-mat").innerHTML = "";
+      document.getElementById("dealer-mat").innerHTML = "";
+    }
+  </script>
+</body>
+</html>

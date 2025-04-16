@@ -1,0 +1,51 @@
+<!-- start.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blackjack Start</title>
+  <link rel="stylesheet" href="start.css">
+</head>
+<body>
+  <div class="start-screen">
+    <h1>♠ Blackjack ♣</h1>
+    <button onclick="location.href='game.html'">Start</button>
+    <button onclick="toggleHelp()">Help</button>
+    <button onclick="toggleSettings()">Settings</button>
+  </div>
+
+  <div id="help-modal" class="modal hidden">
+    <iframe src="help.html"></iframe>
+  </div>
+
+  <div id="settings-modal" class="modal hidden">
+    <iframe src="settings.html"></iframe>
+  </div>
+
+  <div id="overlay"></div>
+
+  <script>
+    function toggleHelp() {
+      const help = document.getElementById("help-modal");
+      const overlay = document.getElementById("overlay");
+      help.classList.toggle("hidden");
+      overlay.style.display = help.classList.contains("hidden") ? "none" : "block";
+    }
+  
+    function toggleSettings() {
+      const settings = document.getElementById("settings-modal");
+      const overlay = document.getElementById("overlay");
+      settings.classList.toggle("hidden");
+      overlay.style.display = settings.classList.contains("hidden") ? "none" : "block";
+    }
+  
+
+    document.getElementById("overlay").addEventListener("click", () => {
+      document.getElementById("help-modal").classList.add("hidden");
+      document.getElementById("settings-modal").classList.add("hidden");
+      document.getElementById("overlay").style.display = "none";
+    });
+  </script>
+  
+</body>
+</html>
