@@ -1,0 +1,567 @@
+/* Base styles and CSS reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #202a16; /* Dark green background to match image */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main game container - will always fit the screen */
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh 2vw;
+}
+
+/* Game content wrapper - maintains aspect ratio */
+.game-content {
+    position: relative;
+    width: 100%;
+    max-width: 1400px; /* Hard limit on width */
+    aspect-ratio: 16/9;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure game content fits within viewport */
+@media (max-height: 800px) {
+    .game-content {
+        height: 90vh;
+        width: auto;
+    }
+}
+
+@media (max-width: 1400px) {
+    .game-content {
+        width: 90vw;
+        height: auto;
+    }
+}
+
+/* Game header with controls */
+.game-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1vh;
+    z-index: 10;
+}
+
+.back-button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: clamp(14px, 1.2vw, 18px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.game-info {
+    display: flex;
+    gap: clamp(10px, 1vw, 20px);
+}
+
+.info-box {
+    background-color: rgba(10, 15, 6, 0.8);
+    border-radius: 8px;
+    padding: clamp(6px, 0.6vh, 10px) clamp(10px, 1vw, 20px);
+    text-align: center;
+}
+
+.info-label {
+    display: block;
+    font-size: clamp(10px, 0.8vw, 14px);
+    text-transform: uppercase;
+}
+
+.info-value {
+    display: block;
+    font-size: clamp(14px, 1.2vw, 20px);
+    font-weight: bold;
+}
+
+/* Game table - main play area */
+.game-table {
+    flex: 1;
+    width: 100%;
+    background-color: #437b42; /* Medium green for table to match image */
+    border-radius: clamp(20px, 3vw, 40px);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(15px, 2vh, 30px) clamp(15px, 2vw, 30px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5) inset;
+    border: clamp(4px, 0.5vw, 8px) solid #141a0d;
+    overflow: hidden; /* Prevent any overflow */
+    margin-bottom: 2vh;
+}
+
+/* Player labels */
+.player-label {
+    background-color: rgba(10, 15, 6, 0.8);
+    color: white;
+    border-radius: 20px;
+    padding: clamp(4px, 0.5vh, 8px) clamp(10px, 1vw, 20px);
+    font-size: clamp(12px, 0.9vw, 16px);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: clamp(10px, 1vh, 20px);
+}
+
+/* Cards section - with fixed proportions */
+.cards-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(20px, 3vh, 50px);
+    flex: 1;
+    padding: clamp(10px, 1vh, 20px) 0;
+}
+
+.cards-container {
+    display: flex;
+    gap: clamp(8px, 0.8vw, 15px);
+    justify-content: center;
+}
+
+.player-section, .dealer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Card sizing with max limits */
+.card {
+    width: clamp(50px, 5vw, 80px);
+    height: clamp(70px, 7vw, 115px);
+    border-radius: clamp(4px, 0.5vw, 8px);
+    position: relative;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.card-front {
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+}
+
+.card-back {
+    background-color: rgba(10, 15, 6, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-pattern {
+    color: #94c990;
+    font-size: clamp(18px, 1.5vw, 24px);
+}
+
+.card-corner {
+    position: absolute;
+    top: clamp(3px, 0.3vw, 6px);
+    left: clamp(3px, 0.3vw, 6px);
+    font-size: clamp(12px, 1vw, 16px);
+    line-height: 1;
+}
+
+.card-corner-bottom {
+    position: absolute;
+    bottom: clamp(3px, 0.3vw, 6px);
+    right: clamp(3px, 0.3vw, 6px);
+    font-size: clamp(12px, 1vw, 16px);
+    line-height: 1;
+    transform: rotate(180deg);
+}
+
+.card-value {
+    font-weight: bold;
+}
+
+.card-suit {
+    font-size: clamp(10px, 0.8vw, 14px);
+}
+
+.card-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(20px, 1.8vw, 30px);
+}
+
+.red {
+    color: #d10808;
+}
+
+.black {
+    color: #000;
+}
+
+/* Direction arrow */
+.direction-arrow {
+    color: #2d542c;
+    height: clamp(40px, 5vh, 80px);
+    width: clamp(20px, 2vw, 40px);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.direction-arrow::before {
+    content: '';
+    position: absolute;
+    height: 75%;
+    width: 15%;
+    background-color: #2d542c;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.direction-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: clamp(10px, 1vw, 20px) solid transparent;
+    border-right: clamp(10px, 1vw, 20px) solid transparent;
+    border-top: clamp(10px, 1vw, 20px) solid #2d542c;
+}
+
+/* Bottom controls section - fixed height to prevent overflow */
+.bottom-controls {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(10px, 1vh, 20px);
+    margin-top: auto;
+}
+
+/* Current bet display */
+.current-bet {
+    background-color: rgba(10, 15, 6, 0.8);
+    color: white;
+    border-radius: 20px;
+    padding: clamp(5px, 0.6vh, 10px) clamp(15px, 1.5vw, 25px);
+    font-size: clamp(12px, 0.9vw, 16px);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Betting chips - with max size limits */
+.betting-chips {
+    display: flex;
+    gap: clamp(8px, 0.8vw, 15px);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.betting-chip {
+    width: clamp(40px, 4vw, 60px);
+    height: clamp(40px, 4vw, 60px);
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: clamp(12px, 1vw, 18px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+    transition: transform 0.1s;
+}
+
+.betting-chip:hover {
+    transform: scale(1.05);
+}
+
+.betting-chip:active {
+    transform: scale(0.95);
+}
+
+.betting-chip.selected {
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.7);
+}
+
+.chip-1 {
+    background-color: #d9d9d9;
+    color: black;
+}
+
+.chip-5 {
+    background-color: #ff4444;
+}
+
+.chip-10 {
+    background-color: #3f3fff;
+}
+
+.chip-25 {
+    background-color: #3aa03a;
+}
+
+.chip-100 {
+    background-color: #2b2626;
+}
+
+/* Side controls */
+.side-controls {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 1vh, 20px);
+}
+
+.left-controls {
+    left: clamp(10px, 1vw, 20px);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.right-controls {
+    right: clamp(10px, 1vw, 20px);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.control-button {
+    width: clamp(30px, 3vw, 45px);
+    height: clamp(30px, 3vw, 45px);
+    background-color: rgba(10, 15, 6, 0.8);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: clamp(14px, 1.2vw, 20px);
+}
+
+.square-button {
+    border-radius: clamp(4px, 0.4vw, 8px);
+}
+
+.score-display {
+    width: clamp(30px, 3vw, 45px);
+    height: clamp(30px, 3vw, 45px);
+    background-color: rgba(10, 15, 6, 0.8);
+    border-radius: clamp(4px, 0.4vw, 8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: clamp(14px, 1.2vw, 20px);
+}
+
+/* Game action buttons - match the image */
+.action-buttons {
+    display: flex;
+    gap: clamp(10px, 1vw, 20px);
+}
+
+.action-button {
+    padding: clamp(8px, 0.8vh, 15px) clamp(20px, 2vw, 40px);
+    border: none;
+    border-radius: clamp(15px, 1.5vw, 30px);
+    color: white;
+    font-weight: bold;
+    font-size: clamp(12px, 1vw, 18px);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.1s;
+    white-space: nowrap;
+}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.action-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hit-button {
+    background-color: #3aa03a;
+}
+
+.stand-button {
+    background-color: #aa0000;
+}
+
+.double-button {
+    background-color: #e67e22;
+}
+
+/* Responsive design for different screen sizes */
+/* Portrait orientation on mobile */
+@media (max-aspect-ratio: 1/1) {
+    .game-content {
+        width: 95vw;
+        height: auto;
+        aspect-ratio: 3/4;
+    }
+    
+    .cards-section {
+        gap: clamp(15px, 2vh, 30px);
+    }
+    
+    .direction-arrow {
+        height: clamp(30px, 4vh, 50px);
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: clamp(8px, 1vh, 15px);
+        align-items: center;
+    }
+    
+    .action-button {
+        width: clamp(150px, 50vw, 250px);
+        text-align: center;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 350px), (max-height: 500px) {
+    .game-table {
+        border-width: 3px;
+        padding: 10px;
+    }
+    
+    .side-controls {
+        display: none;
+    }
+    
+    .card {
+        width: 40px;
+        height: 56px;
+    }
+    
+    .card-corner, .card-corner-bottom {
+        font-size: 10px;
+    }
+    
+    .card-center {
+        font-size: 16px;
+    }
+    
+    .betting-chip {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+    }
+    
+    .action-button {
+        padding: 6px 15px;
+        font-size: 12px;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 450px) {
+    .game-content {
+        width: 95vw;
+        height: 95vh;
+        aspect-ratio: auto;
+    }
+    
+    .game-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+    }
+    
+    .cards-section {
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 10px;
+        margin-top: 40px;
+    }
+    
+    .direction-arrow {
+        display: none;
+    }
+    
+    .player-section, .dealer-section {
+        flex-direction: column-reverse;
+    }
+    
+    .bottom-controls {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 20px;
+    }
+    
+    .betting-chips {
+        flex-wrap: wrap;
+        max-width: 50%;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* Large screens - ensure proper scaling */
+@media (min-width: 1400px) or (min-height: 900px) {
+    .game-content {
+        max-width: 1400px;
+        max-height: 800px;
+    }
+    
+    .card {
+        width: 70px;
+        height: 100px;
+    }
+    
+    .betting-chip {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .action-button {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+}
