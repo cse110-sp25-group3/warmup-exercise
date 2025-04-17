@@ -6,6 +6,7 @@ step2-game-logic/
 ── rules.js        # Whether player/dealer bust, blackjack, win/loss.
 ── payout.js       #  settlement money, odds calculation
 ── state.js        #  player money state
+── recommandation.js    # logic for recommandation
 ── storage.js       # Use localStorage to store money and other long term states
 ── utils.js         # utility functions, e.g. count points, soft 17 or not, etc.
 ── index.html       # Basic front-end for testing all functions
