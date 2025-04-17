@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    background: transparent;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .help-box {
+    background-color: #3e4a30;
+    border-radius: 20px;
+    padding: 40px;
+    width: 600px;
+    max-width: 100%;
+    max-height: 90vh;
+    color: white;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    margin: 100px auto;
+  }
+  
+  .help-box h2 {
+    margin-top: 0;
+    font-size: 1.8em;
+  }
+  
+  .help-box p {
+    line-height: 1.5em;
+  }
+  
+  .help-box .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .help-box .close-btn:hover {
+    color: #ccc;
+  }
+  
