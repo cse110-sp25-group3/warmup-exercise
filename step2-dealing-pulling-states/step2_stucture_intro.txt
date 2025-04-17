@@ -1,0 +1,12 @@
+step2-game-logic/
+── game.js          # game-master, unified call to each module logic (finally integrated by the captain)
+── deck.js         # Card dealing & assignment
+── player.js       # Manage player/dealer hands, card draw, reset, etc.
+── actions.js      # Hit / Stand / Double / Split / Surrender etc behavior functions
+── rules.js        # Whether player/dealer bust, blackjack, win/loss.
+── payout.js       #  settlement money, odds calculation
+── state.js        #  player money state
+── storage.js       # Use localStorage to store money and other long term states
+── utils.js         # utility functions, e.g. count points, soft 17 or not, etc.
+── index.html       # Basic front-end for testing all functions
+── style.css        # style file (for test page)
