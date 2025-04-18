@@ -448,7 +448,20 @@ body {
     background-color: #e67e22;
 }
 
-.overlay {
+.card.flipped .card-inner {
+    transform: rotateY(0deg); /* Flip to back when flipped class is added */
+}
+
+/* slide the card in from the right */
+@keyframes slideIn {
+    from { transform: translateX(100px) scale(0.8); opacity: 0; }
+    to   { transform: translateX(0)      scale(1);   opacity: 1; }
+  }
+  .slide-in {
+    animation: slideIn 0.4s ease-out forwards;
+  }
+
+  .overlay {
     position: fixed;
     top: 0; left: 0;
     width: 100vw;
@@ -485,7 +498,6 @@ body {
   .hidden {
     display: none;
   }
-  
 
 /* Responsive design for different screen sizes */
 /* Portrait orientation on mobile */

@@ -127,13 +127,13 @@
 
             <!-- Game action buttons -->
             <div class="action-buttons">
-                <button class="action-button hit-button">HIT</button>
-                <button class="action-button stand-button">STAND</button>
-                <button class="action-button double-button">DOUBLE</button>
+                <button class="action-button hit-button" data-action="hit">HIT</button>
+                <button class="action-button stand-button" data-action="stand">STAND</button>
+                <button class="action-button double-button" data-action="double">DOUBLE</button>
             </div>
         </div>
     </div>
-
+  
     <!-- Help modal + overlay -->
     <div id="overlay" class="overlay hidden"></div>
     <div id="help-modal" class="modal hidden">
@@ -145,7 +145,7 @@
     </div>
     
     <script src="start.js"></script>
-    <script src="game.js">
+    <script type="module" src="game.js"></script>
     </script>
     
 </body>
