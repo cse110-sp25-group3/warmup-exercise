@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
             cardElement.addEventListener('animationend', () => flipCard(cardElement), { once: true });
         }
     }
+});
 
     function handleHit() { //drawing a card from the deck
         addCard(playerContainer);
