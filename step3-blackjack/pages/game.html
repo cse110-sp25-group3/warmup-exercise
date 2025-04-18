@@ -14,8 +14,10 @@
             <!-- Game header with controls -->
             <header class="game-header">
                 <button class="back-button">
-                    <i class="fas fa-arrow-left"></i>
-                    Back
+                    <a href="start.html" class="back-link">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </a>
                 </button>
                 <div class="game-info">
                     <div class="info-box round-info">
@@ -104,10 +106,10 @@
 
                 <!-- Side controls -->
                 <div class="side-controls left-controls">
-                    <button class="control-button">
+                    <button class="control-button" onclick="toggleSettings()">
                         <i class="fas fa-cog"></i>
                     </button>
-                    <button class="control-button">
+                    <button class="control-button" onclick="toggleHelp()">
                         <i class="fas fa-question"></i>
                     </button>
                     <button class="control-button">
@@ -132,8 +134,19 @@
         </div>
     </div>
 
+    <!-- Help modal + overlay -->
+    <div id="overlay" class="overlay hidden"></div>
+    <div id="help-modal" class="modal hidden">
+        <iframe src="help.html" frameborder="0"></iframe>
+    </div>
+
+    <div id="settings-modal" class="modal hidden">
+        <iframe src="settings.html" frameborder="0"></iframe>
+    </div>
+    
+    <script src="start.js"></script>
     <script src="game.js">
-        
     </script>
+    
 </body>
 </html>
