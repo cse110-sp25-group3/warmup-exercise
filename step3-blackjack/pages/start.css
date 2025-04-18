@@ -142,7 +142,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: none; /* ✅ 완전 투명하게 */
+  pointer-events: none; 
 }
 
 .modal iframe {
@@ -151,10 +151,30 @@ body {
   border: none;
   border-radius: 16px;
   background: transparent;
-  pointer-events: auto;  /* ✅ iframe 내부 클릭 가능하게 복구 */
+  pointer-events: auto; 
 }
 
 
 .hidden {
   display: none;
+}
+
+
+@media (max-height: 850px) {
+  .card-stack {
+    opacity: 0.3;
+    transform: scale(0.8);
+    z-index: 0;
+  }
+
+  .card-stack .card {
+    pointer-events: none;
+  }
+
+  .start-button,
+  .how-button,
+  .settings-button {
+    z-index: 2;
+    position: relative;
+  }
 }
