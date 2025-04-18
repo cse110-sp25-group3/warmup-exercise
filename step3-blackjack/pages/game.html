@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="game.css">
 </head>
 <body>
-    <main class="game-container">
-        <section class="game-content">
+    <div class="game-container">
+        <div class="game-content">
             <!-- Game header with controls -->
             <header class="game-header">
                 <button class="back-button">
@@ -19,7 +19,7 @@
                         Back
                     </a>
                 </button>
-                <section class="game-info">
+                <div class="game-info">
                     <div class="info-box round-info">
                         <span class="info-label">ROUND</span>
                         <span class="info-value">1</span>
@@ -28,74 +28,74 @@
                         <span class="info-label">BALANCE</span>
                         <span class="info-value">$1000</span>
                     </div>
-                </section>
+                </div>
             </header>
 
             <!-- Game table - main play area -->
-            <section class="game-table">
+            <div class="game-table">
                 <!-- Cards section -->
-                <section class="cards-section">
+                <div class="cards-section">
                     <!-- Dealer section -->
-                    <article class="dealer-section">
-                        <h2 class="player-label dealer-label">DEALER</h2>
+                    <div class="dealer-section">
+                        <div class="player-label dealer-label">DEALER</div>
                         <div class="cards-container">
                             <div class="card card-front">
                                 <div class="card-corner black">
-                                    <span class="card-value">A</span>
-                                    <span class="card-suit">♣</span>
+                                    <div class="card-value">A</div>
+                                    <div class="card-suit">♣</div>
                                 </div>
                                 <div class="card-center black">♣</div>
                                 <div class="card-corner-bottom black">
-                                    <span class="card-value">A</span>
-                                    <span class="card-suit">♣</span>
+                                    <div class="card-value">A</div>
+                                    <div class="card-suit">♣</div>
                                 </div>
                             </div>
                             <div class="card card-back">
                                 <div class="card-pattern">♦</div>
                             </div>
                         </div>
-                    </article>
+                    </div>
 
                     <!-- Direction arrow -->
                     <div class="direction-arrow"></div>
 
                     <!-- Player section -->
-                    <article class="player-section">
+                    <div class="player-section">
                         <div class="cards-container">
                             <div class="card card-front">
                                 <div class="card-corner red">
-                                    <span class="card-value">10</span>
-                                    <span class="card-suit">♥</span>
+                                    <div class="card-value">10</div>
+                                    <div class="card-suit">♥</div>
                                 </div>
                                 <div class="card-center red">♥</div>
                                 <div class="card-corner-bottom red">
-                                    <span class="card-value">10</span>
-                                    <span class="card-suit">♥</span>
+                                    <div class="card-value">10</div>
+                                    <div class="card-suit">♥</div>
                                 </div>
                             </div>
                             <div class="card card-front">
                                 <div class="card-corner black">
-                                    <span class="card-value">Q</span>
-                                    <span class="card-suit">♠</span>
+                                    <div class="card-value">Q</div>
+                                    <div class="card-suit">♠</div>
                                 </div>
                                 <div class="card-center black">♠</div>
                                 <div class="card-corner-bottom black">
-                                    <span class="card-value">Q</span>
-                                    <span class="card-suit">♠</span>
+                                    <div class="card-value">Q</div>
+                                    <div class="card-suit">♠</div>
                                 </div>
                             </div>
                         </div>
-                        <h2 class="player-label">YOU</h2>
-                    </article>
-                </section>
+                        <div class="player-label">YOU</div>
+                    </div>
+                </div>
 
                 <!-- Bottom controls section -->
-                <section class="bottom-controls">
+                <div class="bottom-controls">
                     <!-- Current bet display -->
-                    <p class="current-bet">CURRENT BET: $0</p>
+                    <div class="current-bet">CURRENT BET: $0</div>
 
                     <!-- Betting chips -->
-                    <nav class="betting-chips">
+                    <div class="betting-chips">
                         <button class="bet-button">RESET</button>
                         <button class="betting-chip chip-1" data-value="1">$1</button>
                         <button class="betting-chip chip-5" data-value="5">$5</button>
@@ -103,11 +103,11 @@
                         <button class="betting-chip chip-25" data-value="25">$25</button>
                         <button class="betting-chip chip-100" data-value="100">$100</button>
                         <button class="bet-button">BET</button>
-                    </nav>
-                </section>
+                    </div>
+                </div>
 
                 <!-- Side controls -->
-                <aside class="side-controls left-controls">
+                <div class="side-controls left-controls">
                     <button class="control-button" onclick="toggleSettings()">
                         <i class="fas fa-cog"></i>
                     </button>
@@ -117,24 +117,24 @@
                     <button class="control-button">
                         <i class="fas fa-lightbulb"></i>
                     </button>
-                </aside>
+                </div>
 
-                <aside class="side-controls right-controls">
+                <div class="side-controls right-controls">
                     <button class="control-button square-button">
                         <i class="fas fa-question"></i>
                     </button>
                     <div class="score-display">20</div>
-                </aside>
-            </section>
+                </div>
+            </div>
 
             <!-- Game action buttons -->
-            <section class="action-buttons">
+            <div class="action-buttons">
                 <button class="action-button hit-button" data-action="hit">HIT</button>
                 <button class="action-button stand-button" data-action="stand">STAND</button>
                 <button class="action-button double-button" data-action="double">DOUBLE</button>
-            </section>
-        </section>
-    </main>
+            </div>
+        </div>
+    </div>
   
     <!-- Help modal + overlay -->
     <div id="overlay" class="overlay hidden"></div>
@@ -148,5 +148,7 @@
     
     <script src="start.js"></script>
     <script type="module" src="game.js"></script>
+    </script>
+    
 </body>
 </html>
