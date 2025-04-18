@@ -34,6 +34,7 @@ export class BlackjackGame {
   playerHit() {
     const card = this.deck.dealCard();
     if (card) this.playerHand.push(card);
+    // TODO: Check bust using rules.js
     if (this.isBust(this.playerHand)) {
       this.endRound('lose');
     }
@@ -43,6 +44,9 @@ export class BlackjackGame {
    * player ends turn, dealer starts
    */
   playerStand() {
+    // TODO: Implement dealer logic (draw to 17, hit soft 17)
+    // TODO: Compare hands and determine result
+    // TODO: Call settle() with resultType
     this.dealerPlay();
     this.determineWinner();
   }
@@ -51,6 +55,7 @@ export class BlackjackGame {
    * player uses double down
    */
   playerDoubleDown() {
+    // TODO: Implement doubling bet and dealing one more card
     if (this.state.placeBet(this.state.currentBet)) {
       this.playerHit();
       if (!this.roundOver) {
@@ -64,6 +69,7 @@ export class BlackjackGame {
    * Player chooses to surrender
    */
   playerSurrender() {
+    // TODO: Forfeit half bet and end round
     this.endRound('surrender');
   }
 
@@ -165,3 +171,4 @@ export class BlackjackGame {
     console.log("Dealer:", this.dealerHand);
   }
 }
+
