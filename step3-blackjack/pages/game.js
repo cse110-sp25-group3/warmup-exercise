@@ -19,20 +19,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
     // Simple UI interaction for betting chips
-    bettingChips.forEach(chip => {
-        chip.addEventListener('click', function() {
-            // Get chip value
-            const chipValue = this.dataset.value;
-            
-            // Update current bet display
-            currentBetDisplay.textContent = `CURRENT BET: $${chipValue}`;
-            
-            // Visual feedback - highlight selected chip
-            bettingChips.forEach(c => c.classList.remove('selected'));
-            this.classList.add('selected');
-        });
-    });
+    let currentBet = 0; // Initialize the current bet amount
 
+bettingChips.forEach(chip => {
+    chip.addEventListener('click', function() {
+        // Get chip value and convert it to a number
+        const chipValue = parseInt(this.dataset.value);
+
+        // Add chip value to the current bet
+        currentBet += chipValue;
+
+        // Update current bet display
+        currentBetDisplay.textContent = `CURRENT BET: $${currentBet}`;
+
+        // Visual feedback - optional: briefly highlight the clicked chip
+        this.classList.add('selected');
+        setTimeout(() => this.classList.remove('selected'), 200); // Remove highlight after 200ms
+    });
 
     function updatePlayerScore() { //updating sum on the screen 
         document.querySelector('.score-display').textContent = calculateHand(playerContainer);
