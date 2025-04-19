@@ -96,13 +96,13 @@
 
                     <!-- Betting chips -->
                     <nav class="betting-chips">
-                        <button class="bet-button">RESET</button>
+                        <button id="reset-button" class="bet-button">RESET</button>
                         <button class="betting-chip chip-1" data-value="1">$1</button>
                         <button class="betting-chip chip-5" data-value="5">$5</button>
                         <button class="betting-chip chip-10" data-value="10">$10</button>
                         <button class="betting-chip chip-25" data-value="25">$25</button>
                         <button class="betting-chip chip-100" data-value="100">$100</button>
-                        <button class="bet-button">BET</button>
+                        <button id="bet-button"  class="bet-button">BET</button>
                     </nav>
                 </section>
 
@@ -145,6 +145,20 @@
     <div id="settings-modal" class="modal hidden">
         <iframe src="settings.html" frameborder="0"></iframe>
     </div>
+    <!-- Result modal + overlay -->
+    <div id="result-modal" class="modal hidden">
+        <div class="result-box">
+        <h2 id="result-title">YOU WIN!!</h2>
+        <hr class="result-separator" />
+        <p id="result-detail">You won $<span id="win-amount">0</span></p>
+        <div class="result-buttons">
+            <button id="play-again" class="action-button">PLAY AGAIN</button>
+            <button id="quit" class="action-button secondary">QUIT</button>
+        </div>
+        </div>
+    </div>
+
+
     
     <script src="start.js"></script>
     <script type="module" src="game.js"></script>

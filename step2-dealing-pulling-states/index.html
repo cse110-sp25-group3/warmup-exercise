@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blackjack Game Test</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+    button { margin: 5px; padding: 10px 15px; font-size: 16px; }
+    pre { background: white; padding: 10px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Step 2 Blackjack Logic Test</h1>
+  <button onclick="start()">Start Round</button>
+  <button onclick="hit()">Hit</button>
+  <button onclick="settleWin()">Settle (Win)</button>
+  <button onclick="settleBlackjack()">Settle (Blackjack)</button>
+  <button onclick="settleTie()">Settle (Tie)</button>
+  <button onclick="settleLose()">Settle (Lose)</button>
+  <button onclick="showHands()">Show Hands</button>
+  <button onclick="showMoney()">Show Money</button>
+
+  <h3>Console Output:</h3>
+  <pre id="output"></pre>
+
+  <script type="module">
+    import { BlackjackGame } from './game.js';
+
+    const output = document.getElementById('output');
+    const game = new BlackjackGame();
+
+    function log(msg) {
+      output.textContent += msg + '\n';
+    }
+
+    window.start = function() {
+      game.state.placeBet(100);  // simulate bet
+      game.startRound();
+      log('--- New Round Started ---');
+      log('Player Hand: ' + JSON.stringify(game.playerHand));
+      log('Dealer Hand: ' + JSON.stringify(game.dealerHand));
+    }
+
+    window.hit = function() {
+      game.playerHit();
+      log('Player hits: ' + JSON.stringify(game.playerHand));
+    }
+
+    window.settleWin = function() {
+      game.settle('win');
+      log('Settled: WIN');
+      showMoney();
+    }
+
+    window.settleBlackjack = function() {
+      game.settle('blackjack');
+      log('Settled: BLACKJACK');
+      showMoney();
+    }
+
+    window.settleTie = function() {
+      game.settle('tie');
+      log('Settled: TIE');
+      showMoney();
+    }
+
+    window.settleLose = function() {
+      game.settle('lose');
+      log('Settled: LOSE');
+      showMoney();
+    }
+
+    window.showHands = function() {
+      log('Player Hand: ' + JSON.stringify(game.playerHand));
+      log('Dealer Hand: ' + JSON.stringify(game.dealerHand));
+    }
+
+    window.showMoney = function() {
+      log('Player Money: $' + game.state.money);
+    }
+  </script>
+</body>
+</html>
