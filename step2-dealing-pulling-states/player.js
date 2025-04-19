@@ -18,6 +18,7 @@ export class CardManager{
     initialDeal(){
         this.playerHand = this.deck.dealMultiple(2);
         this.dealerHand = this.deck.dealMultiple(2);
+        this.dealtCards.push(...this.playerHand, ...this.dealerHand);
     }
 
     // Deals one card to the player
