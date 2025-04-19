@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rules.js Test</title>
+</head>
+<body>
+  <h1>Check the console</h1>
+  <script type="module">
+    import { 
+      calculateHandValue, 
+      isBlackjack, 
+      isBust, 
+      evaluateHands, 
+      fiveCardCharlie 
+    } from './rules.js';
+
+    // Helper: Create card objects
+    const A = { suit: 'Spades', rank: 'A' };
+    const K = { suit: 'Hearts', rank: 'K' };
+    const Q = { suit: 'Clubs', rank: 'Q' };
+    const _10 = { suit: 'Diamonds', rank: '10' };
+    const _5 = { suit: 'Spades', rank: '5' };
+    const _2 = { suit: 'Clubs', rank: '2' };
+
+    // 🔍 Test calculateHandValue
+    console.log('Value of [A, K] (Blackjack):', calculateHandValue([A, K])); // should be 21
+    console.log('Value of [A, 5, 5]:', calculateHandValue([A, _5, _5])); // should be 21
+    console.log('Value of [A, 5, 5, K]:', calculateHandValue([A, _5, _5, K])); // should be 31 → Ace becomes 1 → total 21
+
+    // 🔍 Test isBlackjack
+    console.log('isBlackjack([A, K]):', isBlackjack([A, K])); // true
+    console.log('isBlackjack([A, 5, 5]):', isBlackjack([A, _5, _5])); // false
+
+    // 🔍 Test isBust
+    console.log('isBust([10, K, 2]):', isBust([_10, K, _2])); // true
+
+    // 🔍 Test fiveCardCharlie
+    console.log('fiveCardCharlie([2, 2, 2, 2, 2]):', fiveCardCharlie([_2, _2, _2, _2, _2])); // true
+    console.log('fiveCardCharlie([10, 10, 2, 2, 10]):', fiveCardCharlie([_10, _10, _2, _2, _10])); // false
+
+    // 🔍 Test evaluateHands
+    console.log('evaluateHands([A, K], [10, 9]):', evaluateHands([A, K], [_10, { suit: 'Spades', rank: '9' }])); // 'blackjack'
+    console.log('evaluateHands([10, 7], [10, 9]):', evaluateHands([{ suit: 'Hearts', rank: '10' }, { suit: 'Clubs', rank: '7' }], [{ suit: 'Hearts', rank: '10' }, { suit: 'Clubs', rank: '9' }])); // 'lose'
+  </script>
+</body>
+</html>

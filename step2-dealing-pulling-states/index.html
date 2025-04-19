@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Player Test</title>
+</head>
+<body>
+  <h1>Check the Console for CardManager Test</h1>
+  <script type="module">
+    import { CardManager } from './player.js';
+
+    // Create a new game instance
+    const game = new CardManager();
+
+    game.initialDeal();
+    console.log('Initial Hands:', game.getHands());  // ✅ Expect 2 cards each
+
+    // Then hit separately if you want to test them:
+    const card1 = game.hitPlayer();
+    console.log('Player drew:', card1);
+    console.log('Updated Player Hand:', game.getHands().player);
+
+    const card2 = game.hitDealer();
+    console.log('Dealer drew:', card2);
+    console.log('Updated Dealer Hand:', game.getHands().dealer);
+
+    // Reset game
+    game.resetGame();
+    console.log('After reset:', game.getHands());
+  </script>
+</body>
+</html>
