@@ -47,30 +47,23 @@ export function isBust(hand) {
 //Determines the game result.
 // Use hand value and rules to decide winner
 export function evaluateHands(playerHand, dealerHand) {
-    if(isBlackjack(playerHand) && isBlackjack(dealerHand)){
-        return 'tie'; // from the internet:If a player and the dealer each have Blackjack the result is a push and the player's bet is returned
-    } else if(isBlackjack(playerHand)){ 
-        return 'blackjack';
-    } else if(isBlackjack(dealerHand)){
-        return 'lose';
-    } else if(isBust(playerHand)){
-        return 'lose';
-    } else if(isBust(dealerHand)){
-        return 'win';
-    } else if (fiveCardCharlie(playerHand)){
-        return 'win';
-    }
+    const playerBJ = isBlackjack(playerHand);
+    const dealerBJ = isBlackjack(dealerHand);
+
+    if (playerBJ && dealerBJ) return 'tie'; // from the internet:If a player and the dealer each have Blackjack the result is a push and the player's bet is returned
+    if (playerBJ) return 'blackjack';
+    if (dealerBJ) return 'lose';
+    if (isBust(playerHand)) return 'lose';
+    if (isBust(dealerHand)) return 'win';
+    if (fiveCardCharlie(playerHand)) return 'win';
     
     const playerValue = calculateHandValue(playerHand);
     const dealerValue = calculateHandValue(dealerHand);
 
-    if(playerValue > dealerValue){
-        return 'win';
-    } else if(playerValue === dealerValue){
-        return 'tie';
-    } else{ // maybe there are more condition of winning? but that's what I can find for now
-        return 'lose';
-    }
+    if (playerValue > dealerValue) return 'win';
+    if(playerValue === dealerValue) return 'tie';
+    // maybe there are more condition of winning? but that's what I can find for now
+    return 'lose';
 }
 
 // should I add the dealer ai here?
