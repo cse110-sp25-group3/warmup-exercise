@@ -23,14 +23,20 @@ export class CardManager{
     // Deals one card to the player
     hitPlayer(){
         const card = this.deck.dealCard();
-        if (card) this.playerHand.push(card);
+        if (card) {
+            this.playerHand.push(card);
+            this.dealtCards.push(card); // track the dealt card
+        }
         return card; // lets other code that call this function know what was dealt
     }
 
     // Deals one card to the Dealer
     hitDealer(){
         const card = this.deck.dealCard();
-        if (card) this.dealerHand.push(card);
+        if (card) {
+            this.dealerHand.push(card);
+            this.dealtCards.push(card);
+        }
         return card; // lets other code that call this function know what was dealt
     }
 
