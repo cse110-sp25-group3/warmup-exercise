@@ -61,7 +61,9 @@ export class CardManager{
         };
     }
 
-    
+    getDealCards(){
+        return [...this.dealtCards];
+    }
 
     // reset deck and clears hands
     resetGame(){
@@ -69,5 +71,6 @@ export class CardManager{
         this.deck.shuffle();
         this.playerHand = [];
         this.dealerHand = [];
+        this.dealtCards = [];
     }
 }
