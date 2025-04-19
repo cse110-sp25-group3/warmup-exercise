@@ -1,7 +1,7 @@
 // Calculates total value of a hand with correct ace handling
 // note: Blackjack rules: face = 10, Ace = 11 or 1
 export function calculateHandValue(hand) {
-    let handValue = 0;
+    let sum = 0;
     let aces = 0;
 
     for(const card of hand){
@@ -35,8 +35,9 @@ export function isBlackjack(hand) {
 }
 
 // 5 cards charlie rule
-export function winByCharlieRule(hand){
-    if(hand.length >= 5){
+export function fiveCardCharlie(hand){
+    const handValue = calculateHandValue(hand);
+    if(hand.length >= 5 && handValue <= 21){
         return true;
     }
 }
@@ -52,29 +53,27 @@ export function isBust(hand) {
 //Determines the game result.
 // Use hand value and rules to decide winner
 export function evaluateHands(playerHand, dealerHand) {
-    if(isBlackjack(playerHand)){ //be careful for the hands get modified after using the calculateHandValue function
-        // playey wins
+    if(isBlackjack(playerHand) && isBlackjack(dealerHand)){
+        return 'tie'; // from the internet:If a player and the dealer each have Blackjack the result is a push and the player's bet is returned
+    } else if(isBlackjack(playerHand)){ 
+        return 'blackjack';
+    } else if(isBlackjack(dealerHand)){
+        return 'lose';
+    } else if(isBust(playerHand)){
+        return 'lose';
+    } else if(isBust(dealerHand)){
+        return 'win';
     }
-    // what if both player and dealer have blackjack?
-    else if(isBust(playerHand)){
-        // player lose
-    }
-    else if(isBust(dealerHand)){
-        // player win
-    }
-
+    
     const playerValue = calculateHandValue(playerHand);
     const dealerValue = calculateHandValue(dealerHand);
 
     if(playerValue > dealerValue){
-        // player wins
-    }
-    else if(playerValue === dealerValue){
-        // ties
-    }
-    // maybe there are more condition of winning? for example have more than 5 cards?
-    else{
-        // player lose
+        return 'win';
+    } else if(playerValue === dealerValue){
+        return 'ties';
+    } else{ // maybe there are more condition of winning? but that's what I can find for now
+        return 'lose';
     }
 }
 
