@@ -11,25 +11,33 @@ export class CardManager{
         // hand
         this.playerHand = [];
         this.dealerHand = [];
+        this.dealtCards = [];
     }
 
     // Deals two cards to both player and dealer
     initialDeal(){
         this.playerHand = this.deck.dealMultiple(2);
         this.dealerHand = this.deck.dealMultiple(2);
+        this.dealtCards.push(...this.playerHand, ...this.dealerHand);
     }
 
     // Deals one card to the player
     hitPlayer(){
         const card = this.deck.dealCard();
-        if (card) this.playerHand.push(card);
+        if (card) {
+            this.playerHand.push(card);
+            this.dealtCards.push(card); // track the dealt card
+        }
         return card; // lets other code that call this function know what was dealt
     }
 
     // Deals one card to the Dealer
     hitDealer(){
         const card = this.deck.dealCard();
-        if (card) this.dealerHand.push(card);
+        if (card) {
+            this.dealerHand.push(card);
+            this.dealtCards.push(card);
+        }
         return card; // lets other code that call this function know what was dealt
     }
 
@@ -53,7 +61,9 @@ export class CardManager{
         };
     }
 
-    
+    getDealtCards(){
+        return [...this.dealtCards];
+    }
 
     // reset deck and clears hands
     resetGame(){
@@ -61,5 +71,6 @@ export class CardManager{
         this.deck.shuffle();
         this.playerHand = [];
         this.dealerHand = [];
+        this.dealtCards = [];
     }
 }

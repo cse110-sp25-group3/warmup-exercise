@@ -23,10 +23,12 @@
     const card2 = game.hitDealer();
     console.log('Dealer drew:', card2);
     console.log('Updated Dealer Hand:', game.getHands().dealer);
+    console.log('Dealt Cards:', game.getDealtCards());
 
     // Reset game
     game.resetGame();
     console.log('After reset:', game.getHands());
+    console.log('Dealt Cards:', game.getDealtCards());
   </script>
 </body>
 </html>
