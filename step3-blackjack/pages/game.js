@@ -16,28 +16,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Simple UI interaction for betting chips
     let currentBet = 0; // Initialize the current bet amount
 
-bettingChips.forEach(chip => {
-    chip.addEventListener('click', function() {
-        // Get chip value and convert it to a number
-        const chipValue = parseInt(this.dataset.value);
-
-        // Add chip value to the current bet
-        currentBet += chipValue;
-
-        // Update current bet display
-        currentBetDisplay.textContent = `CURRENT BET: $${currentBet}`;
-
-        // Visual feedback - optional: briefly highlight the clicked chip
-        this.classList.add('selected');
-        setTimeout(() => this.classList.remove('selected'), 200); // Remove highlight after 200ms
+    bettingChips.forEach(chip => {
+        chip.addEventListener('click', function() {
+            if (betFinalized) return; // Prevent bet change after finalized
+    
+            const chipValue = parseInt(this.dataset.value);
+            currentBet += chipValue;
+            currentBetDisplay.textContent = `CURRENT BET: $${currentBet}`;
+    
+            this.classList.add('selected');
+            setTimeout(() => this.classList.remove('selected'), 200);
+        });
     });
-});
+    
 const resetButton = document.querySelector('.bet-button'); // First .bet-button is RESET
 resetButton.addEventListener('click', function () {
+    if (betFinalized) return; // Prevent reset after bet is finalized
+
     currentBet = 0;
     currentBetDisplay.textContent = `CURRENT BET: $${currentBet}`;
     betFinalized = false;
-
 
     this.style.opacity = '0.8';
     setTimeout(() => {
@@ -45,9 +43,8 @@ resetButton.addEventListener('click', function () {
     }, 200);
 
     console.log('Bet has been reset.');
-    
-
 });
+
 const betButton = document.querySelectorAll('.bet-button')[1]; // Second .bet-button (BET)
 betButton.addEventListener('click', function () {
     if (betFinalized) return; // Prevent repeated deductions
