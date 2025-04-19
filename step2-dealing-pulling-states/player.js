@@ -1,4 +1,4 @@
-import {Deck} from './deck.js'
+import { Deck } from './deck.js';
 
 // Constructor for initializing the game state
 export class CardManager{
