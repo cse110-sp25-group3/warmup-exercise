@@ -41,3 +41,77 @@ export function flipCard(card) {
     `;
     card.appendChild(bottom);
 }
+
+/** add on
+ * <playing-card> Web Component
+ * Attributes: rank="A|2|...|K" suit="♠|♥|♣|♦" color="red|black"
+ * Click to flip the card
+ */
+class PlayingCard extends HTMLElement {
+    constructor() {
+      super();
+      this._faceUp = false;
+      this.attachShadow({ mode: 'open' });
+      this._cardData = {
+        rank: this.getAttribute('rank'),
+        suitSymbol: this.getAttribute('suit'),
+        color: this.getAttribute('color')
+      };
+      this._container = document.createElement('div');
+      this.shadowRoot.appendChild(this._container);
+    }
+  
+    static get observedAttributes() {
+      return ['rank', 'suit', 'color'];
+    }
+  
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (oldValue !== newValue) {
+        if (name === 'rank') this._cardData.rank = newValue;
+        if (name === 'suit') this._cardData.suitSymbol = newValue;
+        if (name === 'color') this._cardData.color = newValue;
+        this.render();
+      }
+    }
+  
+    connectedCallback() {
+      this.render();
+      this._container.addEventListener('click', () => this.flip());
+    }
+  
+    render() {
+      // clear
+      this._container.innerHTML = '';
+      // draw either face-down or face-up
+      const cardEl = this._faceUp
+        ? document.createElement('div')
+        : document.createElement('div');
+  
+      if (!this._faceUp) {
+        // back
+        cardEl.className = 'card card-back';
+        const pattern = document.createElement('div');
+        pattern.className = 'card-pattern';
+        pattern.textContent = this._cardData.suitSymbol;
+        cardEl._cardData = this._cardData;
+        cardEl.appendChild(pattern);
+      } else {
+        // front
+        cardEl.className = 'card card-front';
+        cardEl._cardData = this._cardData;
+        flipCard(cardEl);
+      }
+  
+      this._container.appendChild(cardEl);
+    }
+  
+    flip() {
+      this._faceUp = true;
+      this.render();
+    }
+  }
+  
+  customElements.define('playing-card', PlayingCard);
+  
+  export { PlayingCard };
+  
