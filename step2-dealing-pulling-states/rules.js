@@ -29,25 +29,19 @@ export function calculateHandValue(hand) {
 // Checks if hand is a natural blackjack (exactly 2 cards = 21)
 export function isBlackjack(hand) {
     const handValue = calculateHandValue(hand);
-    if (hand.length === 2 && handValue ===21){
-        return true;
-    }
+    return hand.length === 2 && handValue === 21;
 }
 
 // 5 cards charlie rule
 export function fiveCardCharlie(hand){
     const handValue = calculateHandValue(hand);
-    if(hand.length >= 5 && handValue <= 21){
-        return true;
-    }
+    return hand.length >= 5 && handValue <= 21;
 }
 
 // Checks if the hand has exceeded 21.
 export function isBust(hand) {
     const handValue = calculateHandValue(hand);
-    if(handValue > 21){
-        return true;
-    }
+    return handValue > 21;
 }
 
 //Determines the game result.
@@ -63,6 +57,8 @@ export function evaluateHands(playerHand, dealerHand) {
         return 'lose';
     } else if(isBust(dealerHand)){
         return 'win';
+    } else if (fiveCardCharlie(playerHand)){
+        return 'win';
     }
     
     const playerValue = calculateHandValue(playerHand);
@@ -71,12 +67,11 @@ export function evaluateHands(playerHand, dealerHand) {
     if(playerValue > dealerValue){
         return 'win';
     } else if(playerValue === dealerValue){
-        return 'ties';
+        return 'tie';
     } else{ // maybe there are more condition of winning? but that's what I can find for now
         return 'lose';
     }
 }
-
 
 // should I add the dealer ai here?
 /**
