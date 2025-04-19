@@ -11,6 +11,7 @@ export class CardManager{
         // hand
         this.playerHand = [];
         this.dealerHand = [];
+        this.dealtCards = [];
     }
 
     // Deals two cards to both player and dealer
