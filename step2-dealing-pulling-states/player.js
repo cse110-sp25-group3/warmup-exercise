@@ -61,7 +61,7 @@ export class CardManager{
         };
     }
 
-    getDealCards(){
+    getDealtCards(){
         return [...this.dealtCards];
     }
 
