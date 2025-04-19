@@ -3,6 +3,7 @@
 import { Deck } from './deck.js';
 import { GameState } from './state.js';
 import { calculatePayout } from './payout.js';
+import { CardManager } from './player.js';
 // import { Player } from './player.js'; 
 // import * as Rules from './rules.js'; 
 // import * as Actions from './actions.js';
@@ -11,10 +12,8 @@ import { calculatePayout } from './payout.js';
 export class BlackjackGame {
     
   constructor(){
-    this.deck = new Deck();
+    this.cardManager = new CardManager(); // Handles deck and hand management
     this.state = new GameState();
-    this.playerHand = [];
-    this.dealerHand =[];
     this.roundOver=false;
   }
 
@@ -22,19 +21,30 @@ export class BlackjackGame {
    * initialize the round: shuffle and deal cards
    */
   startRound() {
-    this.deck.reset();
-    this.deck.shuffle();
-    this.playerHand =this.deck.dealMultiple(2);
-    this.dealerHand = this.deck.dealMultiple(2);
+    this.cardManager.resetGame();
+    this.cardManager.initialDeal();
     this.roundOver= false;
+  }
+
+  /**
+   * For getting direct access to player's hand
+   */
+  get playerHand() {
+    return this.cardManager.getHands().player;
+  }
+
+  /**
+   * For getting direct access to dealer's hand
+   */
+  get dealerHand() {
+    return this.cardManager.getHands().dealer;
   }
 
   /**
    * Player requests another card
    */
   playerHit() {
-    const card = this.deck.dealCard();
-    if (card) this.playerHand.push(card);
+    this.cardManager.hitPlayer();
     // TODO: Check bust using rules.js
   }
 
@@ -90,7 +100,8 @@ export class BlackjackGame {
    * For testing
    */
   debugHands() {
-    console.log("Player:", this.playerHand);
-    console.log("Dealer:", this.dealerHand);
+    const hands = this.cardManager.getHands();
+    console.log('Player Hand:', hands.player);
+    console.log('Dealer Hand:', hands.dealer);
   }
 }
