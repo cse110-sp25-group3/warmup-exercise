@@ -4,8 +4,7 @@ import { Deck } from './deck.js';
 import { GameState } from './state.js';
 import { calculatePayout } from './payout.js';
 import { CardManager } from './player.js';
-// import { Player } from './player.js'; 
-// import * as Rules from './rules.js'; 
+import { evaluateHands, isBust } from './rules.js';
 // import * as Actions from './actions.js';
 // import * as Recommendation from './recommendation.js';
 
@@ -45,7 +44,9 @@ export class BlackjackGame {
    */
   playerHit() {
     this.cardManager.hitPlayer();
-    // TODO: Check bust using rules.js
+    if (isBust(this.playerHand)) {
+      this.settle('lose');
+    }
   }
 
   /**
