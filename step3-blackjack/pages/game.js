@@ -5,6 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentBetDisplay = document.querySelector('.current-bet');
     const actionButtons = document.querySelectorAll('.action-button');
     const backButton = document.querySelector('.back-button');
+    let currentBalance = 1000; // Starting balance
+    let betFinalized = false;
+
+    const balanceValueSpan = document.querySelector('.balance-info .info-value');
+    balanceValueSpan.textContent = `$${currentBalance}`;
+
+
     
     // Simple UI interaction for betting chips
     let currentBet = 0; // Initialize the current bet amount
@@ -29,6 +36,8 @@ const resetButton = document.querySelector('.bet-button'); // First .bet-button 
 resetButton.addEventListener('click', function () {
     currentBet = 0;
     currentBetDisplay.textContent = `CURRENT BET: $${currentBet}`;
+    betFinalized = false;
+
 
     this.style.opacity = '0.8';
     setTimeout(() => {
@@ -36,7 +45,30 @@ resetButton.addEventListener('click', function () {
     }, 200);
 
     console.log('Bet has been reset.');
+    
+
 });
+const betButton = document.querySelectorAll('.bet-button')[1]; // Second .bet-button (BET)
+betButton.addEventListener('click', function () {
+    if (betFinalized) return; // Prevent repeated deductions
+
+    if (currentBet > 0 && currentBet <= currentBalance) {
+        currentBalance -= currentBet;
+        balanceValueSpan.textContent = `$${currentBalance}`;
+        betFinalized = true;
+        console.log(`Balance updated: $${currentBalance}`);
+    } else {
+        alert("Invalid bet or insufficient balance.");
+    }
+
+    this.style.opacity = '0.8';
+    setTimeout(() => {
+        this.style.opacity = '1';
+    }, 200);
+});
+
+
+
 
     
     // Simple UI interaction for action buttons
