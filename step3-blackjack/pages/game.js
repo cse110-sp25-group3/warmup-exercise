@@ -41,6 +41,9 @@ resetButton.addEventListener('click', function () {
     currentBetDisplay.textContent = `CURRENT BET: $${currentBet}`;
     betFinalized = false;
 
+    game.state.resetMoney();
+    balanceValueSpan.textContent = `$${game.state.money}`;
+
     this.style.opacity = '0.8';
     setTimeout(() => {
         this.style.opacity = '1';
@@ -55,7 +58,7 @@ betButton.addEventListener('click', function () {
 
     const betPlaced = game.state.placeBet(currentBet);
     if (betPlaced) {
-        balanceValueSpan.textContent = `$${currentBalance}`;
+        balanceValueSpan.textContent = `$${game.state.money}`;
         betFinalized = true;
         console.log(`Balance updated: $${currentBalance}`);
     } else {
