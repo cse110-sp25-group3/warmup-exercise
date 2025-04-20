@@ -121,6 +121,7 @@ export class BlackjackGame {
     const payout = calculatePayout(resultType, this.state.currentBet);
     this.state.updateMoney(payout);
     this.roundOver = true;
+    this.checkGameOver();
   }
 
   /**
@@ -129,5 +130,24 @@ export class BlackjackGame {
   getRecommendedAction() {
     // Dealer’s up‑card is dealerHand[0]
     return getRecommendedAction(this.playerHand, this.dealerHand[0]);
+  }
+
+  /**
+   * Check the game termination condition for the player
+   */
+  checkGameOver() {
+    const balance = this.state.money;
+    const bet = this.state.currentBet;
+    const total = balance + bet;
+    
+    if (total <= 0){
+      alert("Out of money! Game Over."); // please also improve this alert to another better looking thing if possible
+      // PLEASE READ: has to redirect to some sort of game over screen or start new game screen
+    } else if (balacne >= 10000){
+      alert("You've win 10x money! You win the tournamnet!");
+      // PLEASE READ: has to redirect to some sort of congragulation screen or start new game screen
+    } else {
+      return;
+    }
   }
 }
