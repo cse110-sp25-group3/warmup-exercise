@@ -9,11 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentBetDisplay = document.querySelector('.current-bet');
     const actionButtons = document.querySelectorAll('.action-button');
     const backButton = document.querySelector('.back-button');
-    let currentBalance = 1000; // Starting balance
+    let currentBalance = game.state.money; // Starting balance
     let betFinalized = false;
 
     const balanceValueSpan = document.querySelector('.balance-info .info-value');
-    balanceValueSpan.textContent = `$${currentBalance}`;
+    balanceValueSpan.textContent = `$${game.state.money}`;
 
 
     
@@ -53,8 +53,8 @@ const betButton = document.querySelectorAll('.bet-button')[1]; // Second .bet-bu
 betButton.addEventListener('click', function () {
     if (betFinalized) return; // Prevent repeated deductions
 
-    if (currentBet > 0 && currentBet <= currentBalance) {
-        currentBalance -= currentBet;
+    const betPlaced = game.state.placeBet(currentBet);
+    if (betPlaced) {
         balanceValueSpan.textContent = `$${currentBalance}`;
         betFinalized = true;
         console.log(`Balance updated: $${currentBalance}`);
