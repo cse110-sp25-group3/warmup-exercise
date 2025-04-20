@@ -50,17 +50,19 @@ export class BlackjackGame {
   }
 
   /**
-   * player ends turn, dealer starts
+   * Helper functions for playerStand to execute repeating code
    */
+  executeDealerHitAndSettle(playerCards){ //Note: since there only need one more hand to determine win/lose in tie condition
+                                          // we settle it immediately after comparing
+    this.cardManager.hitDealer();
+    const playerState = evaluateHands(playerCards, this.dealerHand);
+    this.settle(playerState);
+  }
+
   /**
-   * dealer logic:
-      Must hit on a total of 16 or less 
-      Stand on a total of 17 or more 
-      Hit on soft 17 (ace involved)
+   * player ends turn, dealer starts
+   * dealer's game logic is here
    */
-  // TODO: Implement dealer logic (draw to 17, hit soft 17)
-    // TODO: Compare hands and determine result
-    // TODO: Call settle() with resultType
   playerStand() {
     const playerCards = this.playerHand;
     let playerState = evaluateHands(playerCards, this.dealerHand);
@@ -73,15 +75,11 @@ export class BlackjackGame {
           return;
         }
         if (dealerValue === 17 && this.dealerHand.some(card => card.rank === 'A')){ // Hit on soft 17 (ace involved)
-          this.cardManager.hitDealer();
-          playerState = evaluateHands(playerCards, this.dealerHand);
-          this.settle(playerState);
+          executeDealerHitAndSettle(playerCards); // read the helper function defined above
           return;
         } 
         if (dealerValue < 17){ // Must hit on a total of 16 or less 
-          this.cardManager.hitDealer();
-          playerState = evaluateHands(playerCards, this.dealerHand);
-          this.settle(playerState);
+          executeDealerHitAndSettle(playerCards);
           return;
         }
         if (dealerValue > 17){ // Stand on a total of 17 or more 
