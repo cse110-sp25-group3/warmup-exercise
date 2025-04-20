@@ -1,6 +1,5 @@
 // game.js
 
-import { Deck } from './deck.js';
 import { GameState } from './state.js';
 import { calculatePayout } from './payout.js';
 import { CardManager } from './player.js';
@@ -37,16 +36,6 @@ export class BlackjackGame {
    */
   get dealerHand() {
     return this.cardManager.getHands().dealer;
-  }
-
-  /**
-   * Player requests another card
-   */
-  playerHit() {
-    this.cardManager.hitPlayer();
-    if (isBust(this.playerHand)) {
-      this.settle('lose');
-    }
   }
 
   /**
@@ -103,13 +92,6 @@ export class BlackjackGame {
    */
   playerDoubleDown(){
     // TODO: Implement doubling bet and dealing one more card
-  }
-
-  /**
-   * Player chooses to surrender
-   */
-  playerSurrender(){
-    // TODO: Forfeit half bet and end round
   }
 
   /**
