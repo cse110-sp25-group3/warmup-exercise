@@ -55,5 +55,13 @@ export class GameState {
       const stored = localStorage.getItem(this.moneyKey);
       return stored !== null ? JSON.parse(stored) : null;
     }
+
+    /**
+   * Reset player money back to the initial value
+   */
+    resetMoney() {
+      this._money = 1000;
+      this.saveMoney();
+    }
   }
   
