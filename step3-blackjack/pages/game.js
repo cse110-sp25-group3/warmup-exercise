@@ -1,3 +1,7 @@
+import { BlackjackGame } from "./blackJackGameClass";
+
+const game = new BlackjackGame();
+
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
@@ -5,11 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentBetDisplay = document.querySelector('.current-bet');
     const actionButtons = document.querySelectorAll('.action-button');
     const backButton = document.querySelector('.back-button');
-    let currentBalance = 1000; // Starting balance
+    let currentBalance = game.state.money; // Starting balance
     let betFinalized = false;
 
     const balanceValueSpan = document.querySelector('.balance-info .info-value');
-    balanceValueSpan.textContent = `$${currentBalance}`;
+    balanceValueSpan.textContent = `$${game.state.money}`;
 
 
     
@@ -49,8 +53,8 @@ const betButton = document.querySelectorAll('.bet-button')[1]; // Second .bet-bu
 betButton.addEventListener('click', function () {
     if (betFinalized) return; // Prevent repeated deductions
 
-    if (currentBet > 0 && currentBet <= currentBalance) {
-        currentBalance -= currentBet;
+    const betPlaced = game.state.placeBet(currentBet);
+    if (betPlaced) {
         balanceValueSpan.textContent = `$${currentBalance}`;
         betFinalized = true;
         console.log(`Balance updated: $${currentBalance}`);
@@ -76,9 +80,39 @@ betButton.addEventListener('click', function () {
             setTimeout(() => {
                 this.style.opacity = '1';
             }, 200);
+
+            const action = this.dataset.action; // PLEASE READ: I don't know if this is how it should be defined
+                                        // Please delete this message after confirm/change this accordingly
+                                        // This only affect the following switch statements
             
             // Log the action (for demonstration)
             console.log(`${this.textContent} button clicked`);
+            
+            // Inject BlackjackGame logic (without deleting original code)
+            switch(action){
+                case 'hit':
+                    game.cardManager.hitPlayer();
+                    console.log('Player Hand after hit:', game.playerHand);
+                    break;
+
+                case 'stand':
+                    game.playerStand();
+                    console.log('Dealer Hand after stand:', game.dealerHand);
+                    break;
+
+                case 'double':
+                    // This action has not been completed in the blackjack class yet
+                    game.playerDoubleDown?.(); // remember to change this line
+                    break;
+
+                case 'split':
+                    // This action has not been completed in the blackjack class yet
+                    game.playerSplit?.(); // remember to change this line
+                    break;
+
+                default:
+                    console.warn('Unknown action:', action);
+            }
         });
     });
     

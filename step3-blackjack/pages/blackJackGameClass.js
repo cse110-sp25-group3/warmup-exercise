@@ -1,12 +1,10 @@
 // game.js
-
-import { Deck } from './deck.js';
-import { GameState } from './state.js';
-import { calculatePayout } from './payout.js';
-import { CardManager } from './player.js';
-import { evaluateHands, isBust , calculateHandValue, isBlackjack } from '../step3-blackjack/pages/rules.js';
+import { GameState } from '../../step2-dealing-pulling-states/state.js';
+import { calculatePayout } from '../../step2-dealing-pulling-states/payout.js';
+import { CardManager } from '../../step2-dealing-pulling-states/player.js';
+import { evaluateHands, isBust , calculateHandValue, isBlackjack } from './rules.js';
 // import * as Actions from './actions.js';
-// import * as Recommendation from './recommendation.js';
+import { getRecommendedAction } from '../../step2-dealing-pulling-states/recommendation.js';
 
 export class BlackjackGame {
     
@@ -37,16 +35,6 @@ export class BlackjackGame {
    */
   get dealerHand() {
     return this.cardManager.getHands().dealer;
-  }
-
-  /**
-   * Player requests another card
-   */
-  playerHit() {
-    this.cardManager.hitPlayer();
-    if (isBust(this.playerHand)) {
-      this.settle('lose');
-    }
   }
 
   /**
@@ -103,13 +91,6 @@ export class BlackjackGame {
    */
   playerDoubleDown(){
     // TODO: Implement doubling bet and dealing one more card
-  }
-
-  /**
-   * Player chooses to surrender
-   */
-  playerSurrender(){
-    // TODO: Forfeit half bet and end round
   }
 
   /**
