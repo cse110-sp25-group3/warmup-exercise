@@ -4,7 +4,7 @@ import { Deck } from './deck.js';
 import { GameState } from './state.js';
 import { calculatePayout } from './payout.js';
 import { CardManager } from './player.js';
-import { evaluateHands, isBust } from './rules.js';
+import { evaluateHands, isBust , calculateHandValue, isBlackjack } from '../step3-blackjack/pages/rules.js';
 // import * as Actions from './actions.js';
 // import * as Recommendation from './recommendation.js';
 
@@ -50,12 +50,52 @@ export class BlackjackGame {
   }
 
   /**
+   * Helper functions for playerStand to execute repeating code
+   */
+  executeDealerHitAndSettle(playerCards){ //Note: since there only need one more hand to determine win/lose in tie condition
+                                          // we settle it immediately after comparing
+    this.cardManager.hitDealer();
+    const playerState = evaluateHands(playerCards, this.dealerHand);
+    this.settle(playerState);
+  }
+
+  /**
    * player ends turn, dealer starts
+   * dealer's game logic is here
    */
   playerStand() {
-    // TODO: Implement dealer logic (draw to 17, hit soft 17)
-    // TODO: Compare hands and determine result
-    // TODO: Call settle() with resultType
+    const playerCards = this.playerHand;
+    let playerState = evaluateHands(playerCards, this.dealerHand);
+    let dealerValue = calculateHandValue(this.dealerHand);
+
+    while(!isBust(this.dealerHand) && (playerState === 'win' || playerState === 'tie')){ // if the current hand of dealer is impossible to win the player:
+      if (playerState === 'tie'){ // if it's tie: if next hand doesn't make the dealer bust, dealer would definetly win since tie = player=dealer
+        if (isBlackjack(playerCards)){
+          this.settle('tie'); // if both have blackjack it's always a tie
+          return;
+        }
+        if (dealerValue === 17 && this.dealerHand.some(card => card.rank === 'A')){ // Hit on soft 17 (ace involved)
+          executeDealerHitAndSettle(playerCards); // read the helper function defined above
+          return;
+        } 
+        if (dealerValue < 17){ // Must hit on a total of 16 or less 
+          executeDealerHitAndSettle(playerCards);
+          return;
+        }
+        if (dealerValue > 17){ // Stand on a total of 17 or more 
+          playerState = evaluateHands(playerCards, this.dealerHand);
+          this.settle(playerState);
+          return;
+        }
+      }
+      this.cardManager.hitDealer();
+      playerState = evaluateHands(playerCards, this.dealerHand);
+      if(playerState === 'win' || playerState === 'tie'){  // Note: no need to update dealerValue if playerstate is not one of these two condition
+                                                           // because in that case playerState = lose and dealer wins, so we just need to proceed to call settle
+        dealerValue = calculateHandValue(this.dealerHand);
+      }
+    }
+    this.settle(playerState);
   }
 
   /**
