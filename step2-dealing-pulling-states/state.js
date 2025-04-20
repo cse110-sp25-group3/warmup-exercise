@@ -6,6 +6,7 @@
 export class GameState {
     constructor(initialMoney = 1000){
       this.moneyKey ='blackjack-money';
+      this.initialMoney = initialMoney;
       this.currentBet = 0;
       this._money= this.loadMoney() ?? initialMoney;
       this.saveMoney();

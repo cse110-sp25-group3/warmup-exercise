@@ -1,138 +1,133 @@
-// game.js
-import { GameState } from '../../step2-dealing-pulling-states/state.js';
-import { calculatePayout } from '../../step2-dealing-pulling-states/payout.js';
-import { CardManager } from '../../step2-dealing-pulling-states/player.js';
+// step3-blackjack/blackJackGameClass.js
+import { GameState } from "../../step2-dealing-pulling-states/state.js";
+import { calculatePayout } from "../../step2-dealing-pulling-states/payout.js";
+import { CardManager } from "../../step2-dealing-pulling-states/player.js";
 import {
   evaluateHands,
   isBust,
   calculateHandValue,
-  isBlackjack
-} from './rules.js';
-import { getRecommendedAction } from './recommendation.js';
+  isBlackjack,
+} from "./rules.js";
+import { getRecommendedAction } from "./recommendation.js";
 
 export class BlackjackGame {
   constructor() {
-    this.cardManager = new CardManager(); // Handles deck and hand management
-    this.state       = new GameState();
-    this.roundOver   = false;
+    this.cardManager = new CardManager();
+    this.state = new GameState();
+    this.roundOver = false;
+    this.lastResult = null; // 'win' | 'lose' | 'tie' | 'blackjack'
   }
 
-  /**
-   * Allow the UI to call placeBet directly
-   */
   placeBet(amount) {
     return this.state.placeBet(amount);
   }
 
-  /**
-   * initialize the round: shuffle and deal cards
-   */
   startRound() {
+    this.roundOver = false;
+    this.lastResult = null;
     this.cardManager.resetGame();
     this.cardManager.initialDeal();
-    this.roundOver = false;
+
+    // immediate natural-blackjack check
+    const playerBJ = isBlackjack(this.playerHand);
+    const dealerBJ = isBlackjack(this.dealerHand);
+    if (playerBJ || dealerBJ) {
+      let outcome;
+      if (playerBJ && dealerBJ) outcome = "tie";
+      else if (playerBJ) outcome = "blackjack";
+      else outcome = "lose";
+      this.settle(outcome);
+    }
   }
 
-  /**
-   * For getting direct access to player's hand
-   */
   get playerHand() {
     return this.cardManager.getHands().player;
   }
 
-  /**
-   * For getting direct access to dealer's hand
-   */
   get dealerHand() {
     return this.cardManager.getHands().dealer;
   }
 
   /**
-   * Helper function for playerStand to execute repeating code
+   * Player hits once, then we check for bust and auto‑settle.
    */
-  executeDealerHitAndSettle(playerCards) {
-    this.cardManager.hitDealer();
-    const playerState = evaluateHands(playerCards, this.dealerHand);
-    this.settle(playerState);
+  playerHit() {
+    if (this.roundOver) return;
+    this.cardManager.hitPlayer();
+    if (isBust(this.playerHand)) {
+      this.settle("lose");
+    }
   }
 
   /**
-   * player ends turn, dealer starts
-   * dealer's game logic is here
+   * Player stands: dealer reveals hole, draws to (soft) 17, then settle.
    */
   playerStand() {
-    const playerCards = this.playerHand;
-    let playerState   = evaluateHands(playerCards, this.dealerHand);
-    let dealerValue   = calculateHandValue(this.dealerHand);
+    if (this.roundOver) return;
 
-    while (!isBust(this.dealerHand) && (playerState === 'win' || playerState === 'tie')) {
-      if (playerState === 'tie') {
-        if (isBlackjack(playerCards)) {
-          this.settle('tie');
-          return;
-        }
-        if (dealerValue === 17 && this.dealerHand.some(card => card.rank === 'A')) {
-          this.executeDealerHitAndSettle(playerCards);
-          return;
-        }
-        if (dealerValue < 17) {
-          this.executeDealerHitAndSettle(playerCards);
-          return;
-        }
-        if (dealerValue > 17) {
-          playerState = evaluateHands(playerCards, this.dealerHand);
-          this.settle(playerState);
-          return;
-        }
-      }
-      this.cardManager.hitDealer();
-      playerState = evaluateHands(playerCards, this.dealerHand);
-      if (playerState === 'win' || playerState === 'tie') {
-        dealerValue = calculateHandValue(this.dealerHand);
-      }
+    // If player already busted (e.g. via direct cardManager.hitPlayer), bail out.
+    if (isBust(this.playerHand)) {
+      this.settle("lose");
+      return;
     }
 
-    this.settle(playerState);
+    // Dealer hits on <17 or soft‑17
+    const dealerShouldHit = (hand) => {
+      const value = calculateHandValue(hand);
+      const hasA = hand.some((c) => c.rank === "A");
+      return value < 17 || (value === 17 && hasA);
+    };
+
+    while (!isBust(this.dealerHand) && dealerShouldHit(this.dealerHand)) {
+      this.cardManager.hitDealer();
+    }
+
+    const outcome = evaluateHands(this.playerHand, this.dealerHand);
+    this.settle(outcome);
   }
 
   /**
-   * player uses double down
+   * Double down: double your bet, deal exactly one more card, then stand.
    */
   playerDoubleDown() {
-    // TODO: Implement doubling bet and dealing one more card
+    if (this.roundOver) return;
+    if (this.playerHand.length !== 2)
+      throw new Error("Can only double on first two cards.");
+
+    const currentBet = this.state.currentBet;
+    if (!this.state.placeBet(currentBet)) {
+      throw new Error("Insufficient funds to double down.");
+    }
+    this.state.currentBet = 2 * this.state.currentBet;
+
+    this.cardManager.hitPlayer();
+    // whether or not you bust, we immediately go to dealer
+    this.playerStand();
   }
 
   /**
-   * Player splits hand
+   * Splitting is not implemented yet.
    */
   playerSplit() {
-    // TODO: Handle splitting hand logic
+    throw new Error("Split is not implemented yet.");
   }
 
   /**
-   * Apply game result and adjust player's balance
-   * @param {'win'|'blackjack'|'tie'|'lose'} resultType
+   * Finalize the round, adjust money, and record the result.
    */
   settle(resultType) {
+    if (this.roundOver) return;
+    this.lastResult = resultType;
     const payout = calculatePayout(resultType, this.state.currentBet);
     this.state.updateMoney(payout);
     this.roundOver = true;
-    // TODO: Notify frontend of result
   }
 
   /**
-   * get recommended action from recommendation.js
+   * Hook up your basic‑strategy advisor.
    */
   getRecommendedAction() {
-    // TODO: Call recommendation logic and return hint (e.g., 'hit', 'stand')
-  }
-
-  /**
-   * For testing
-   */
-  debugHands() {
-    const hands = this.cardManager.getHands();
-    console.log('Player Hand:', hands.player);
-    console.log('Dealer Hand:', hands.dealer);
+    // Dealer’s up‑card is dealerHand[0]
+    return getRecommendedAction(this.playerHand, this.dealerHand[0]);
   }
 }

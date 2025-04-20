@@ -1,41 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blackjack Start</title>
-  <link rel="stylesheet" href="start.css" />
-</head>
-<body>
-  <div class="start-container">
-    <div class="title">BLACKJACK</div>
-    <p class="subtitle">Test your luck and skill</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackjack Start</title>
+    <link rel="stylesheet" href="start.css" />
+  </head>
+  <body>
+    <div class="start-container">
+      <div class="title">BLACKJACK</div>
+      <p class="subtitle">Test your luck and skill</p>
 
-    <div class="card-stack">
-      <img class="card left-card" src="../../assets/card-suits/Card.svg" alt="card" />
-      <img class="card center-card" src="../../assets/card-suits/Card.svg" alt="card" />
-      <img class="card right-card" src="../../assets/card-suits/Card.svg" alt="card" />
+      <div class="card-stack">
+        <img
+          class="card left-card"
+          src="../../assets/card-suits/Card.svg"
+          alt="card"
+        />
+        <img
+          class="card center-card"
+          src="../../assets/card-suits/Card.svg"
+          alt="card"
+        />
+        <img
+          class="card right-card"
+          src="../../assets/card-suits/Card.svg"
+          alt="card"
+        />
+      </div>
+      <br />
+      <br />
+
+      <div
+        id="btn-start"
+        class="button start-button"
+        onclick="location.href='game.html'"
+      >
+        START GAME
+      </div>
+      <div class="button how-button" onclick="toggleHelp()">HOW TO PLAY</div>
+      <div class="button settings-button" onclick="toggleSettings()">
+        SETTINGS
+      </div>
+
+      <div class="suits">♢♧♡♤</div>
     </div>
-    <br>
-    <br>
 
-    <div class="button start-button" onclick="location.href='game.html'">START GAME</div>
-    <div class="button how-button" onclick="toggleHelp()">HOW TO PLAY</div>
-    <div class="button settings-button" onclick="toggleSettings()">SETTINGS</div>
+    <!-- Help modal + overlay -->
+    <div id="overlay" class="overlay hidden"></div>
+    <div id="help-modal" class="modal hidden">
+      <iframe src="help.html" frameborder="0"></iframe>
+    </div>
 
-    <div class="suits">♢♧♡♤</div>
-  </div>
+    <div id="settings-modal" class="modal hidden">
+      <iframe src="settings.html" frameborder="0"></iframe>
+    </div>
 
-  <!-- Help modal + overlay -->
-  <div id="overlay" class="overlay hidden"></div>
-  <div id="help-modal" class="modal hidden">
-    <iframe src="help.html" frameborder="0"></iframe>
-  </div>
-
-  <div id="settings-modal" class="modal hidden">
-    <iframe src="settings.html" frameborder="0"></iframe>
-  </div>
-
-  <script src="start.js"></script>
-</body>
+    <script src="start.js"></script>
+  </body>
 </html>
