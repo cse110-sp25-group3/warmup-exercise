@@ -1,128 +1,121 @@
-import { BlackjackGame } from "./blackJackGameClass.js";
+import { BlackjackGame }      from './blackJackGameClass.js';
+import { calculateHandValue } from './rules.js';     // hand‑value helper
 
 const game = new BlackjackGame();
 
-// Wait for the DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements
-    const bettingChips = document.querySelectorAll('.betting-chip');
-    const currentBetDisplay = document.querySelector('.current-bet');
-    const actionButtons = document.querySelectorAll('.action-button');
-    const backButton = document.querySelector('.back-button');
-    let currentBalance = game.state.money; // Starting balance
-    let betFinalized = false;
+document.addEventListener('DOMContentLoaded', () => {
+  /* ---------- DOM cache ---------- */
+  const dealerDiv   = document.querySelector('.dealer-section .cards-container');
+  const playerDiv   = document.querySelector('.player-section .cards-container');
+  const chipBtns    = document.querySelectorAll('.betting-chip');
+  const betDisplay  = document.querySelector('.current-bet');
+  const balanceLbl  = document.querySelector('.balance-info .info-value');
+  const resetBtn    = document.getElementById('btn-reset')  || document.querySelector('.bet-button');
+  const betBtn      = document.getElementById('btn-bet')    || document.querySelectorAll('.bet-button')[1];
+  const actionBtns  = document.querySelectorAll('.action-button');
+  const backBtn     = document.querySelector('.back-button');
+  const scoreBox    = document.querySelector('.score-display');
 
-    const balanceValueSpan = document.querySelector('.balance-info .info-value');
-    balanceValueSpan.textContent = `$${game.state.money}`;
+  /* ---------- state ---------- */
+  let currentBet   = 0;
+  let betFinalized = false;
+  balanceLbl.textContent = `$${game.state.money}`;
 
+  /* ---------- suit → symbol helper ---------- */
+  const SUIT_MAP = { Clubs:'♣', Diamonds:'♦', Hearts:'♥', Spades:'♠' };
+  const isRed    = s => s === '♥' || s === '♦';
 
-    
-    // Simple UI interaction for betting chips
-    let currentBet = 0; // Initialize the current bet amount
+  /* ---------- build inner HTML for a face‑up card ---------- */
+  function cardInner({ rank, suit }) {
+    const sym = SUIT_MAP[suit] || suit;
+    const clr = isRed(sym) ? 'red' : 'black';
+    return `
+      <div class="card-corner ${clr}">
+        <span class="card-value">${rank}</span><span class="card-suit">${sym}</span>
+      </div>
+      <div class="card-center ${clr}">${sym}</div>
+      <div class="card-corner-bottom ${clr}">
+        <span class="card-value">${rank}</span><span class="card-suit">${sym}</span>
+      </div>`;
+  }
 
-    bettingChips.forEach(chip => {
-        chip.addEventListener('click', function() {
-            if (betFinalized) return; // Prevent bet change after finalized
-    
-            const chipValue = parseInt(this.dataset.value);
-            currentBet += chipValue;
-            currentBetDisplay.textContent = `CURRENT BET: $${currentBet}`;
-    
-            this.classList.add('selected');
-            setTimeout(() => this.classList.remove('selected'), 200);
-        });
-    });
-    
-const resetButton = document.querySelector('.bet-button'); // First .bet-button is RESET
-resetButton.addEventListener('click', function () {
-    if (betFinalized) return; // Prevent reset after bet is finalized
+  /* ---------- draw & flip both hands ---------- */
+  function renderHands() {
+    dealerDiv.innerHTML = '';
+    playerDiv.innerHTML = '';
 
+    const render = (card, where) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'card card-back';
+      wrap.innerHTML = '<div class="card-pattern">♦</div>';     // back design
+      where.appendChild(wrap);
+      requestAnimationFrame(() => {
+        const sym = SUIT_MAP[card.suit] || card.suit;
+        wrap.className = `card card-front ${isRed(sym)?'red':'black'}`;
+        wrap.innerHTML = cardInner(card);
+      });
+    };
+
+    game.dealerHand.forEach(c => render(c, dealerDiv));
+    game.playerHand.forEach(c => render(c, playerDiv));
+  }
+
+  /* ---------- update score box ---------- */
+  function updateScore() {
+    scoreBox.textContent = calculateHandValue(game.playerHand);
+  }
+
+  /* ---------- chip clicks ---------- */
+  chipBtns.forEach(btn =>
+    btn.addEventListener('click', () => {
+      if (betFinalized) return;
+      currentBet += +btn.dataset.value;
+      betDisplay.textContent = `CURRENT BET: $${currentBet}`;
+      btn.classList.add('selected');
+      setTimeout(() => btn.classList.remove('selected'), 120);
+    })
+  );
+
+  /* ---------- RESET ---------- */
+  resetBtn.addEventListener('click', () => {
+    if (betFinalized) return;
     currentBet = 0;
-    currentBetDisplay.textContent = `CURRENT BET: $${currentBet}`;
-    betFinalized = false;
+    betDisplay.textContent = 'CURRENT BET: $0';
+  });
 
-    this.style.opacity = '0.8';
-    setTimeout(() => {
-        this.style.opacity = '1';
-    }, 200);
+  /* ---------- BET ---------- */
+  betBtn.addEventListener('click', () => {
+    if (betFinalized || currentBet === 0) return;
 
-    console.log('Bet has been reset.');
-});
-
-const betButton = document.querySelectorAll('.bet-button')[1]; // Second .bet-button (BET)
-betButton.addEventListener('click', function () {
-    if (betFinalized) return; // Prevent repeated deductions
-
-    const betPlaced = game.state.placeBet(currentBet);
-    if (betPlaced) {
-        balanceValueSpan.textContent = `$${game.state.money}`;
-        betFinalized = true;
-        console.log(`Balance updated: $${currentBalance}`);
-    } else {
-        alert("Invalid bet or insufficient balance.");
+    if (!game.placeBet(currentBet)) {
+      alert('Invalid bet or insufficient balance.');
+      return;
     }
 
-    this.style.opacity = '0.8';
-    setTimeout(() => {
-        this.style.opacity = '1';
-    }, 200);
-});
+    balanceLbl.textContent = `$${game.state.money}`;
+    betFinalized = true;
 
+    game.startRound();   // shuffle & deal
+    renderHands();
+    updateScore();
+  });
 
+  /* ---------- HIT / STAND / DOUBLE ---------- */
+  actionBtns.forEach(btn =>
+    btn.addEventListener('click', () => {
+      if (!betFinalized) return;
+      const action = btn.dataset.action;
+      if      (action === 'hit')    game.cardManager.hitPlayer();
+      else if (action === 'stand')  game.playerStand();
+      else if (action === 'double') game.playerDoubleDown?.();
+      renderHands();
+      updateScore();
+    })
+  );
 
-
-    
-    // Simple UI interaction for action buttons
-    actionButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Visual feedback
-            this.style.opacity = '0.8';
-            setTimeout(() => {
-                this.style.opacity = '1';
-            }, 200);
-
-            const action = this.dataset.action; // PLEASE READ: I don't know if this is how it should be defined
-                                        // Please delete this message after confirm/change this accordingly
-                                        // This only affect the following switch statements
-            
-            // Log the action (for demonstration)
-            console.log(`${this.textContent} button clicked`);
-            
-            // Inject BlackjackGame logic (without deleting original code)
-            switch(action){
-                case 'hit':
-                    game.cardManager.hitPlayer();
-                    console.log('Player Hand after hit:', game.playerHand);
-                    break;
-
-                case 'stand':
-                    game.playerStand();
-                    console.log('Dealer Hand after stand:', game.dealerHand);
-                    break;
-
-                case 'double':
-                    // This action has not been completed in the blackjack class yet
-                    game.playerDoubleDown?.(); // remember to change this line
-                    break;
-
-                case 'split':
-                    // This action has not been completed in the blackjack class yet
-                    game.playerSplit?.(); // remember to change this line
-                    break;
-
-                default:
-                    console.warn('Unknown action:', action);
-            }
-        });
-    });
-    
-    // Back button interaction
-    backButton.addEventListener('click', function() {
-        console.log('Back button clicked');
-        // Visual feedback
-        this.style.opacity = '0.8';
-        setTimeout(() => {
-            this.style.opacity = '1';
-        }, 200);
-    });
+  /* ---------- Back‑button visual feedback ---------- */
+  backBtn.addEventListener('click', function () {
+    this.style.opacity = 0.7;
+    setTimeout(() => (this.style.opacity = 1), 150);
+  });
 });

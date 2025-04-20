@@ -2,16 +2,26 @@
 import { GameState } from '../../step2-dealing-pulling-states/state.js';
 import { calculatePayout } from '../../step2-dealing-pulling-states/payout.js';
 import { CardManager } from '../../step2-dealing-pulling-states/player.js';
-import { evaluateHands, isBust , calculateHandValue, isBlackjack } from './rules.js';
-// import * as Actions from './actions.js';
+import {
+  evaluateHands,
+  isBust,
+  calculateHandValue,
+  isBlackjack
+} from './rules.js';
 import { getRecommendedAction } from './recommendation.js';
 
 export class BlackjackGame {
-    
-  constructor(){
+  constructor() {
     this.cardManager = new CardManager(); // Handles deck and hand management
-    this.state = new GameState();
-    this.roundOver=false;
+    this.state       = new GameState();
+    this.roundOver   = false;
+  }
+
+  /**
+   * Allow the UI to call placeBet directly
+   */
+  placeBet(amount) {
+    return this.state.placeBet(amount);
   }
 
   /**
@@ -20,7 +30,7 @@ export class BlackjackGame {
   startRound() {
     this.cardManager.resetGame();
     this.cardManager.initialDeal();
-    this.roundOver= false;
+    this.roundOver = false;
   }
 
   /**
@@ -38,10 +48,9 @@ export class BlackjackGame {
   }
 
   /**
-   * Helper functions for playerStand to execute repeating code
+   * Helper function for playerStand to execute repeating code
    */
-  executeDealerHitAndSettle(playerCards){ //Note: since there only need one more hand to determine win/lose in tie condition
-                                          // we settle it immediately after comparing
+  executeDealerHitAndSettle(playerCards) {
     this.cardManager.hitDealer();
     const playerState = evaluateHands(playerCards, this.dealerHand);
     this.settle(playerState);
@@ -53,24 +62,24 @@ export class BlackjackGame {
    */
   playerStand() {
     const playerCards = this.playerHand;
-    let playerState = evaluateHands(playerCards, this.dealerHand);
-    let dealerValue = calculateHandValue(this.dealerHand);
+    let playerState   = evaluateHands(playerCards, this.dealerHand);
+    let dealerValue   = calculateHandValue(this.dealerHand);
 
-    while(!isBust(this.dealerHand) && (playerState === 'win' || playerState === 'tie')){ // if the current hand of dealer is impossible to win the player:
-      if (playerState === 'tie'){ // if it's tie: if next hand doesn't make the dealer bust, dealer would definetly win since tie = player=dealer
-        if (isBlackjack(playerCards)){
-          this.settle('tie'); // if both have blackjack it's always a tie
+    while (!isBust(this.dealerHand) && (playerState === 'win' || playerState === 'tie')) {
+      if (playerState === 'tie') {
+        if (isBlackjack(playerCards)) {
+          this.settle('tie');
           return;
         }
-        if (dealerValue === 17 && this.dealerHand.some(card => card.rank === 'A')){ // Hit on soft 17 (ace involved)
-          executeDealerHitAndSettle(playerCards); // read the helper function defined above
-          return;
-        } 
-        if (dealerValue < 17){ // Must hit on a total of 16 or less 
-          executeDealerHitAndSettle(playerCards);
+        if (dealerValue === 17 && this.dealerHand.some(card => card.rank === 'A')) {
+          this.executeDealerHitAndSettle(playerCards);
           return;
         }
-        if (dealerValue > 17){ // Stand on a total of 17 or more 
+        if (dealerValue < 17) {
+          this.executeDealerHitAndSettle(playerCards);
+          return;
+        }
+        if (dealerValue > 17) {
           playerState = evaluateHands(playerCards, this.dealerHand);
           this.settle(playerState);
           return;
@@ -78,18 +87,18 @@ export class BlackjackGame {
       }
       this.cardManager.hitDealer();
       playerState = evaluateHands(playerCards, this.dealerHand);
-      if(playerState === 'win' || playerState === 'tie'){  // Note: no need to update dealerValue if playerstate is not one of these two condition
-                                                           // because in that case playerState = lose and dealer wins, so we just need to proceed to call settle
+      if (playerState === 'win' || playerState === 'tie') {
         dealerValue = calculateHandValue(this.dealerHand);
       }
     }
+
     this.settle(playerState);
   }
 
   /**
    * player uses double down
    */
-  playerDoubleDown(){
+  playerDoubleDown() {
     // TODO: Implement doubling bet and dealing one more card
   }
 
@@ -104,18 +113,18 @@ export class BlackjackGame {
    * Apply game result and adjust player's balance
    * @param {'win'|'blackjack'|'tie'|'lose'} resultType
    */
-  settle(resultType){
-    const payout =calculatePayout(resultType, this.state.currentBet);
+  settle(resultType) {
+    const payout = calculatePayout(resultType, this.state.currentBet);
     this.state.updateMoney(payout);
     this.roundOver = true;
-    //TODO: Notify frontend of result
+    // TODO: Notify frontend of result
   }
 
   /**
    * get recommended action from recommendation.js
    */
   getRecommendedAction() {
-    //TODO: Call recommendation logic and return hint (e.g., 'hit', 'stand')
+    // TODO: Call recommendation logic and return hint (e.g., 'hit', 'stand')
   }
 
   /**
