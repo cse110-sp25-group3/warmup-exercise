@@ -3,32 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <title>Player Test</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    button { margin: 0.5rem; padding: 0.5rem 1rem; }
+  </style>
 </head>
 <body>
   <h1>Check the Console for CardManager Test</h1>
+  <div>
+    <button id="deal-btn">Initial Deal</button>
+    <button id="hit-player-btn">Hit Player</button>
+    <button id="hit-dealer-btn">Hit Dealer</button>
+    <button id="reset-btn">Reset Game</button>
+  </div>
   <script type="module">
     import { CardManager } from './player.js';
 
-    // Create a new game instance
     const game = new CardManager();
 
-    game.initialDeal();
-    console.log('Initial Hands:', game.getHands());  // ✅ Expect 2 cards each
+    // wire up buttons
+    document.getElementById('deal-btn').addEventListener('click', () => {
+      game.initialDeal();
+      console.log('Initial Hands:', game.getHands());
+    });
 
-    // Then hit separately if you want to test them:
-    const card1 = game.hitPlayer();
-    console.log('Player drew:', card1);
-    console.log('Updated Player Hand:', game.getHands().player);
+    document.getElementById('hit-player-btn').addEventListener('click', () => {
+      const card = game.hitPlayer();
+      console.log('Player drew:', card);
+      console.log('Player Hand:', game.getHands().player);
+    });
 
-    const card2 = game.hitDealer();
-    console.log('Dealer drew:', card2);
-    console.log('Updated Dealer Hand:', game.getHands().dealer);
-    console.log('Dealt Cards:', game.getDealtCards());
+    document.getElementById('hit-dealer-btn').addEventListener('click', () => {
+      const card = game.hitDealer();
+      console.log('Dealer drew:', card);
+      console.log('Dealer Hand:', game.getHands().dealer);
+    });
 
-    // Reset game
-    game.resetGame();
-    console.log('After reset:', game.getHands());
-    console.log('Dealt Cards:', game.getDealtCards());
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      game.resetGame();
+      console.log('Game reset.');
+      console.log('Hands after reset:', game.getHands());
+      console.log('Dealt Cards:', game.getDealtCards());
+    });
   </script>
 </body>
 </html>
