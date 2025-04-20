@@ -56,7 +56,7 @@ export class GameState {
       return stored !== null ? JSON.parse(stored) : null;
     }
 
-    /**
+  /**
    * Reset player money back to the initial value
    */
     resetMoney() {
