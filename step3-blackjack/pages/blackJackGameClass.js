@@ -1,11 +1,10 @@
 // game.js
-
 import { GameState } from '../../step2-dealing-pulling-states/state.js';
 import { calculatePayout } from '../../step2-dealing-pulling-states/payout.js';
 import { CardManager } from '../../step2-dealing-pulling-states/player.js';
 import { evaluateHands, isBust , calculateHandValue, isBlackjack } from './rules.js';
 // import * as Actions from './actions.js';
-// import * as Recommendation from './recommendation.js';
+import { getRecommendedAction } from '../../step2-dealing-pulling-states/recommendation.js';
 
 export class BlackjackGame {
     
