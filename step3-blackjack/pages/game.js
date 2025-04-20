@@ -1,4 +1,4 @@
-import { BlackjackGame } from "./blackJackGameClass";
+import { BlackjackGame } from "./blackJackGameClass.js";
 
 const game = new BlackjackGame();
 
