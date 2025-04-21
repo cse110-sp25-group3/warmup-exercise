@@ -80,6 +80,24 @@
     .close-btn:hover {
       color: #ccc;
     }
+    
+    /* Recommendation settings style */
+    .tip {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 5px;
+      font-style: italic;
+    }
+    
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    
+    .checkbox-wrapper input[type="checkbox"] {
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
@@ -93,15 +111,58 @@
     </div>
 
     <div class="setting-group">
-      <label>
+      <div class="checkbox-wrapper">
         <input type="checkbox" id="sound-toggle" checked />
-        Enable Sound Effects
-      </label>
+        <label for="sound-toggle">Enable Sound Effects</label>
+      </div>
+    </div>
+    
+    <div class="setting-group">
+      <div class="checkbox-wrapper">
+        <input type="checkbox" id="hints-toggle" />
+        <label for="hints-toggle">Show Move Recommendations</label>
+      </div>
+      <p class="tip">Displays the best strategic move based on basic blackjack strategy</p>
     </div>
 
     <button class="reset-button" onclick="resetGame()">Reset Game</button>
   </div>
 
+  <script>
+    document.getElementById("volume").addEventListener("input", (e) => {
+      localStorage.setItem("volume", e.target.value);
+    });
+
+    document.getElementById("sound-toggle").addEventListener("change", (e) => {
+      localStorage.setItem("soundEnabled", e.target.checked);
+    });
+    
+    document.getElementById("hints-toggle").addEventListener("change", (e) => {
+      localStorage.setItem("hintsEnabled", e.target.checked);
+    });
+
+    function resetGame() {
+      if (confirm("Are you sure you want to reset the game?")) {
+        localStorage.clear();
+        alert("Game has been reset.");
+      }
+    }
+
+    window.onload = () => {
+      const volume = localStorage.getItem("volume");
+      const soundEnabled = localStorage.getItem("soundEnabled");
+      const hintsEnabled = localStorage.getItem("hintsEnabled");
+
+      if (volume !== null)
+        document.getElementById("volume").value = volume;
+      if (soundEnabled !== null)
+        document.getElementById("sound-toggle").checked = soundEnabled === "true";
+      if (hintsEnabled !== null)
+        document.getElementById("hints-toggle").checked = hintsEnabled === "true";
+    };
+  </script>
+
   <script src="settings.js"></script>
+
 </body>
 </html>
