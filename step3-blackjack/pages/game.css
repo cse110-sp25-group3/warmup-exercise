@@ -430,7 +430,7 @@ body {
     border-radius: clamp(4px, 0.4vw, 8px);
 }
 
-.score-display {
+.dealer-score-display, .score-display {
     width: clamp(30px, 3vw, 45px);
     height: clamp(30px, 3vw, 45px);
     background-color: rgba(10, 15, 6, 0.5);

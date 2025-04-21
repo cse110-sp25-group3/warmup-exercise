@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const actionBtns = document.querySelectorAll('.action-button');
   const backBtn = document.querySelector('.back-button');
   const scoreBox = document.querySelector('.score-display');
+  const dealerScoreBox = document.querySelector('.dealer-score-display');
   const hintBtn = document.querySelector('.hint-button'); // Hint button reference
   const hintBubble = document.querySelector('.hint-bubble'); // Hint bubble reference
 
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let betFinalized = false;
   let hintsEnabled = localStorage.getItem('hintsEnabled') === 'true' || false;
   balanceLbl.textContent = `$${game.state.money}`;
+  let flipDone = false;
 
   /* ---------- helpers ---------- */
   const SUIT_MAP = { Clubs: '♣', Diamonds: '♦', Hearts: '♥', Spades: '♠' };
@@ -68,20 +70,32 @@ document.addEventListener('DOMContentLoaded', () => {
       wrap.innerHTML = cardInner(card);
       playerDiv.appendChild(wrap);
     });
+
+    flipDone = true;
+
   }
 
   function updateScore() {
-    const handValue = calculateHandValue(game.playerHand);
-    scoreBox.textContent = handValue;
+    const playerHandValue = calculateHandValue(game.playerHand);
+    scoreBox.textContent = playerHandValue;
+  }
+
+  function finalDealerScore(){
+    const dealerHandValue = calculateHandValue(game.dealerHand);
+    dealerScoreBox.textContent = dealerHandValue;
   }
 
   function handleRoundOver() {
     // reveal dealer hole card & final score
     renderHands();
     updateScore();
+    finalDealerScore();
 
     const result = game.lastResult.toUpperCase();
-    alert(`Round over: ${result}`);
+    setTimeout(() => {
+      alert(`Round over: ${result}`);
+      flipDone = false;
+    }, 1000);
 
     // update balance display
     balanceLbl.textContent = `$${game.state.money}`;
