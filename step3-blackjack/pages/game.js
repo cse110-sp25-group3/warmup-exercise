@@ -327,6 +327,11 @@ document.addEventListener('DOMContentLoaded', () => {
           alert("You already have 21! Choose STAND instead.");
           return;
         }
+        const playerhand = game.playerHand;
+        if(playerhand.length >= 5 && currentValue <= 21){
+          alert("You already win by 5 card charlie! Choose STAND instead.");
+          return;
+        }
         
         game.playerHit();
         renderHands();
@@ -347,6 +352,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentValue = calculateHandValue(game.playerHand);
         if (currentValue >= 21) {
           alert("You already have 21! Choose STAND instead.");
+          return;
+        }
+        const playerhand = game.playerHand;
+        if(playerhand.length >= 5 && currentValue <= 21){
+          alert("You already win by 5 card charlie! Choose STAND instead.");
           return;
         }
         
