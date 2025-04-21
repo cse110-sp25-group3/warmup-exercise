@@ -677,3 +677,103 @@ body {
         font-size: 16px;
     }
 } */
+
+/* Recommendation System Styles */
+.hint-button {
+    position: relative;
+    width: clamp(30px, 3vw, 45px);
+    height: clamp(30px, 3vw, 45px);
+    background-color: rgba(10, 15, 6, 0.5);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: clamp(14px, 1.2vw, 20px);
+    transition: all 0.2s ease;
+  }
+  
+  .hint-button.active {
+    background-color: #9fd49f;
+    color: #3c4a30;
+    box-shadow: 0 0 10px rgba(159, 212, 159, 0.5);
+  }
+  
+  .hint-button:hover {
+    transform: scale(1.05);
+  }
+  
+  .hint-bubble {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 10px;
+    background-color: #9fd49f;
+    color: #3c4a30;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: clamp(12px, 0.9vw, 16px);
+    white-space: nowrap;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    pointer-events: none;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .hint-bubble::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: #9fd49f transparent transparent transparent;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  
+  /* Animation for when hint updates */
+  @keyframes hintUpdate {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.1); }
+    100% { transform: translateX(-50%) scale(1); }
+  }
+  
+  .hint-update {
+    animation: hintUpdate 0.5s ease;
+  }
+  
+  /* Action button highlight when recommended */
+  .action-button.recommended {
+    box-shadow: 0 0 15px rgba(159, 212, 159, 1);
+    animation: pulse 1.5s infinite;
+  }
+  
+  /* Flash animation for when recommendation changes */
+  @keyframes recommendFlash {
+    0% { background-color: #9fd49f; color: #3c4a30; }
+    100% { background-color: inherit; }
+  }
+  
+  .recommend-flash {
+    animation: recommendFlash 0.7s ease-out;
+  }
+  
+  @keyframes pulse {
+    0% { box-shadow: 0 0 15px rgba(159, 212, 159, 0.6); }
+    50% { box-shadow: 0 0 20px rgba(159, 212, 159, 1); }
+    100% { box-shadow: 0 0 15px rgba(159, 212, 159, 0.6); }
+  }
+  
+  /* Hide elements */
+  .hidden {
+    display: none !important;
+  }

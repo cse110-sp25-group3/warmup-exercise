@@ -4,6 +4,20 @@
   <meta charset="UTF-8" />
   <title>How to Play</title>
   <link rel="stylesheet" href="help.css" />
+  <style>
+    .strategy-tip {
+      background-color: rgba(159, 212, 159, 0.3);
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 15px;
+      border-left: 4px solid #9fd49f;
+    }
+    
+    .key-concept {
+      font-weight: bold;
+      color: #9fd49f;
+    }
+  </style>
 </head>
 <body>
   <div class="help-box">
@@ -12,12 +26,50 @@
     <hr>
     <h3 style="color:#9fd49f">Objective</h3>
     <p>Beat the dealer by getting a hand value as close to 21 as possible without going over.</p>
+    
     <h3 style="color:#9fd49f">Card Values</h3>
     <ul>
       <li>&diams; Cards 2–10 are worth their face value</li>
-      <li>&clubs; Face cards are worth 10</li>
-      <li>&hearts; Aces are worth 1 or 11</li>
+      <li>&clubs; Face cards (Jack, Queen, King) are worth 10</li>
+      <li>&hearts; Aces are worth 1 or 11 (whichever works best for your hand)</li>
     </ul>
+    
+    <h3 style="color:#9fd49f">Gameplay</h3>
+    <ol>
+      <li>Place your bet using the chips at the bottom</li>
+      <li>You and the dealer will each receive two cards</li>
+      <li>One of the dealer's cards remains face down</li>
+      <li>Choose to Hit, Stand, or Double Down to play your hand</li>
+      <li>The dealer will play their hand according to fixed rules</li>
+    </ol>
+    
+    <h3 style="color:#9fd49f">Player Actions</h3>
+    <ul>
+      <li><strong>Hit:</strong> Take another card</li>
+      <li><strong>Stand:</strong> End your turn with your current hand</li>
+      <li><strong>Double Down:</strong> Double your bet and receive exactly one more card</li>
+    </ul>
+    
+    <h3 style="color:#9fd49f">Strategy Recommendations</h3>
+    <p>
+      The recommendation system helps you make optimal decisions based on basic 
+      blackjack strategy. This is a mathematically calculated approach that gives 
+      you the best odds against the house.
+    </p>
+    
+    <div class="strategy-tip">
+      <p><span class="key-concept">To use recommendations:</span></p>
+      <ul>
+        <li>Click the lightbulb icon on the left side of the table to toggle recommendations on/off</li>
+        <li>When enabled, you'll see a suggestion bubble showing the statistically best move</li>
+        <li>The recommended action button will also be highlighted</li>
+        <li>Recommendations update automatically after each new card is dealt</li>
+        <li>You can also enable/disable recommendations in the Settings menu</li>
+      </ul>
+      <p>Following basic strategy won't guarantee wins on every hand, but it optimizes your chances over time.</p>
+    </div>
+    
+    <p><em>Note: When you have 21, the system will always recommend Stand (and prevent Hit/Double).</em></p>
   </div>
 </body>
 </html>
