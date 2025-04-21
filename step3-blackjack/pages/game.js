@@ -302,7 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
     game.startRound();
     renderHands();
     updateScore();
-
+    
+    dealerScoreBox.textContent = '?';
     // Add a delay before showing the hint to let the cards render first
     setTimeout(() => {
       updateHint();
