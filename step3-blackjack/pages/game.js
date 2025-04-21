@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     balanceLbl.textContent = `$${game.state.money}`;
+    betDisplay.textContent = `YOU BET: $${currentBet}`;
     betFinalized = true;
 
     game.startRound();
